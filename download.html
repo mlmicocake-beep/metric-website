@@ -63,7 +63,8 @@
        裡面記著該檔案的 SHA-256。下載後可以自己核對：</p>
     <pre>certutil -hashfile MetricPortalSetup-&lt;版本&gt;.exe SHA256</pre>
     <p style="color:var(--fg2);font-size:14.5px">
-      算出來的值要與下方顯示的一致。Portal 在安裝更新時<b>本來就會自動驗證這份簽章</b>，
+算出來的值要與簽章清單裡的 <span class="mono">sha256</span> 一致
+      —— 按上面的「簽章清單」就會打開那個檔。Portal 在安裝更新時<b>本來就會自動驗證這份簽章</b>，
       驗不過一律拒絕安裝 —— 所以手動核對只是多一層確認，不是必要步驟。
     </p>
   </div>
@@ -118,7 +119,6 @@ function card(a, ver, when){
         + esc(ver) + '</span>' : '') + '</h3>'
     + '<p>內含 METRIC Agent　·　' + mb(a.size)
     + (when ? '　·　' + esc(when.slice(0,10)) : '') + '</p>'
-    + '<p class="mono" id="sha" style="margin-top:6px;word-break:break-all"></p>'
     + '</div>'
     + '<a class="btn" href="' + esc(a.browser_download_url) + '">下載</a>'
     + '<a class="btn alt" href="' + esc(a.browser_download_url) + '.manifest.json">簽章清單</a>'
@@ -145,14 +145,11 @@ fetch(API + "?per_page=5", {headers: {"Accept": "application/vnd.github+json"}})
     if (!found) throw new Error("沒有可用的安裝檔");
     document.getElementById("list").innerHTML = card(found, ver, when);
     document.getElementById("src").textContent = "METRIC　·　" + (ver ? ver : "");
-    // SHA-256 從簽章清單讀出來顯示 —— 使用者要核對的就是這個值
-    fetch(found.browser_download_url + ".manifest.json")
-      .then(function(x){ return x.json(); })
-      .then(function(d){
-        var el = document.getElementById("sha");
-        if (el && d && d.payload && d.payload.sha256)
-          el.textContent = "SHA-256 " + d.payload.sha256;
-      }).catch(function(){});
+    // 🔴 不要再加「抓 manifest 把 sha256 顯示在頁面上」這件事。
+    // release 附件的網址會轉到 objects.githubusercontent.com，那邊不送
+    // Access-Control-Allow-Origin，瀏覽器的 fetch 一定被 CORS 擋掉 ——
+    // 失敗被 catch 吃掉之後，畫面上就是一個永遠空白的欄位。
+    // 要核對的人按「簽章清單」直接開那個檔就看得到 sha256。
   })
   .catch(function(e){
     document.getElementById("list").innerHTML =
