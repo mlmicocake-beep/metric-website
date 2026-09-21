@@ -1,0 +1,227 @@
+/* METRIC 官方網站 —— 與 Agent 桌面 GUI 對齊
+ *
+ * 色票與字體不是自己挑的，直接取自產品的主題定義：
+ * `apps/desktop/src/themes/presets.ts` 的 `nousTheme`
+ * （label「Metric」、描述「GitHub chrome, Metric blue accent」）。
+ * 網站與產品要長得像同一個東西，所以這裡**不另立一套色**。
+ *
+ * 排版規則取自 `apps/desktop/DESIGN.md`，三條直接影響這一份：
+ *
+ *   1. **Flat, not boxed.** 不要卡片套卡片、不要在同一塊裡面加分隔框。
+ *      分組只用留白與**單一細線**，不要一層層的圓角方塊。
+ *   2. **文字按鈕不做圓角**，靠 padding 與 line-height 決定尺寸、不給固定高度。
+ *      只有圖示按鈕用共用的 4px 圓角。
+ *   3. **Tokens, not literals.** 顏色一律走 CSS 變數，元件裡不寫死色值。
+ *
+ * 🔴 品牌紅（#872E2E／#C8393E）**只出現在標誌本體**。品牌規範是「紅色僅用於
+ * 需要人處理的事項」，所以強調色用圖示的黑白（深底用白），不是紅。
+ * 也不得加漸層、陰影、發光 —— 整份沒有一個 box-shadow／gradient。
+ *
+ * ⚠️ 字體刻意不載 Google Fonts。產品主題有掛 Courier Prime 的 webfont，但那只
+ * 影響等寬字；為了一個細節讓每個訪客多連一次外部網域不值得。字體堆疊與產品
+ * 一致，有裝就用、沒裝就退回系統等寬字。
+ */
+
+:root {
+  /* 黑白：白底黑字（淺色） */
+  --bg: #ffffff;
+  --fg: #010101;
+  --card: #f5f5f5;
+  --muted-fg: #6b6b6b;
+  --bd: #e0e0e0;
+  --primary: #010101;
+  --primary-fg: #ffffff;
+
+  --max: 880px;
+  /* DESIGN.md：共用圓角 4px，而且只有圖示按鈕用 —— 文字按鈕是方的。 */
+  --radius: 4px;
+
+  --sans: "Segoe WPC", "Segoe UI", -apple-system, BlinkMacSystemFont,
+          "SF Pro Text", "SF Pro Display", system-ui, "Noto Sans TC",
+          "Microsoft JhengHei", sans-serif;
+  --mono: Menlo, Monaco, "SF Mono", "Courier Prime", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* 黑白：黑底白字（深色） */
+    --bg: #010101;
+    --fg: #ffffff;
+    --card: #0d0d0d;
+    --muted-fg: #8a8a8a;
+    --bd: #2e2e2e;
+    --primary: #ffffff;
+    --primary-fg: #010101;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.7 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+/* ── 頂欄：單一細線收邊，不用陰影（flat 原則）─────────────────────────── */
+header {
+  border-bottom: 1px solid var(--bd);
+  position: sticky; top: 0; z-index: 10; background: var(--bg);
+}
+.nav {
+  max-width: 1100px; margin: 0 auto; padding: 12px 24px;
+  display: flex; align-items: center; gap: 26px;
+}
+.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+/* 標誌＝產品實際在用的那個圖示：圓形、黑底、白色波形（metric-badge-ink.svg，
+   與出貨的 portal-icon.ico 同一個）。
+   ⚠️ 兩個容易拿錯的鄰居：metric-app-icon.svg 是圓角方形＋紅波形；
+   metric-lockup-*.svg 分深淺兩版，忘記切換會在其中一種模式下整個看不見。
+   規範第 5 條：符號周圍留白 ≥ 波形高度 1/4（用外距給出來）。 */
+.brand .mark { width: 26px; height: 26px; display: block; border-radius: 50%; margin: 3px 0; }
+.brand span { font-weight: 600; letter-spacing: .14em; font-size: 14px; color: var(--fg); }
+.nav nav { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+.nav nav a {
+  color: var(--muted-fg); text-decoration: none; font-size: 14px;
+  padding: 3px 0; border-bottom: 2px solid transparent;
+}
+.nav nav a:hover { color: var(--fg); }
+.nav nav a[aria-current="page"] { color: var(--fg); border-bottom-color: var(--primary); }
+
+/* ── 版塊 ────────────────────────────────────────────────────────────── */
+section { padding: 60px 0; border-top: 1px solid var(--bd); }
+.hero { padding: 88px 0 72px; }
+
+h1 {
+  font-size: clamp(29px, 4.6vw, 42px); line-height: 1.2;
+  margin: 0 0 18px; letter-spacing: -.015em; font-weight: 600;
+}
+h2 {
+  font-size: clamp(20px, 2.6vw, 25px); line-height: 1.32;
+  margin: 0 0 16px; font-weight: 600; letter-spacing: -.01em;
+}
+h3 { font-size: 15.5px; margin: 0 0 6px; font-weight: 600; }
+p { margin: 0 0 16px; }
+.lead { font-size: 17.5px; color: var(--muted-fg); max-width: 62ch; }
+.eyebrow {
+  font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted-fg); margin: 0 0 12px; font-weight: 600;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── 按鈕：文字按鈕是方的，尺寸由 padding × line-height 決定，不給固定高度 ── */
+.cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.btn {
+  display: inline-block; padding: 9px 20px; border-radius: 0;
+  font-weight: 600; font-size: 14.5px; line-height: 1.5; text-decoration: none;
+  background: var(--primary); color: var(--primary-fg);
+  border: 1px solid var(--primary);
+}
+.btn:hover { filter: brightness(1.08); text-decoration: none; }
+.btn.alt { background: transparent; color: var(--fg); border-color: var(--bd); }
+.btn.alt:hover { border-color: var(--fg); filter: none; }
+
+/* ── 分組：不用卡片外框，用留白與單一細線 ──────────────────────────────── */
+.grid { display: grid; gap: 0 36px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.card { padding: 20px 0; border-top: 1px solid var(--bd); }
+.card p { margin: 0; color: var(--muted-fg); font-size: 14.5px; }
+.card h3 { color: var(--fg); }
+
+.stats { display: flex; gap: 46px; flex-wrap: wrap; margin-top: 6px; }
+.stat .n { font-size: 29px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+.stat .l { font-size: 12.5px; color: var(--muted-fg); margin-top: 3px; }
+
+/* 步驟：一條細線串起來 */
+ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+ol.steps > li {
+  counter-increment: s; position: relative;
+  padding: 0 0 24px 40px; border-left: 1px solid var(--bd); margin-left: 11px;
+}
+ol.steps > li:last-child { border-left-color: transparent; padding-bottom: 0; }
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: -11px; top: 1px;
+  width: 21px; height: 21px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--bd); color: var(--muted-fg);
+  font-size: 11.5px; font-weight: 600; display: grid; place-items: center;
+}
+ol.steps h3 { margin: 0 0 5px; }
+ol.steps p { color: var(--muted-fg); font-size: 14.5px; margin: 0 0 5px; }
+
+/* 表格：只有橫線，沒有外框 */
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--bd); vertical-align: top; }
+th { color: var(--muted-fg); font-weight: 600; font-size: 12.5px; }
+td:first-child { white-space: nowrap; }
+
+.mono { font-family: var(--mono); font-size: 13px; }
+pre {
+  background: var(--card); border: 1px solid var(--bd); border-radius: var(--radius);
+  padding: 14px 16px; overflow-x: auto; margin: 0 0 16px;
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+}
+/* 提示：左側一條主色細線，不做整框（flat 原則） */
+.note {
+  border-left: 2px solid var(--primary); padding: 2px 0 2px 16px;
+  color: var(--muted-fg); font-size: 14.5px; margin: 0 0 16px;
+}
+.note b { color: var(--fg); }
+
+ul.tick { list-style: none; padding: 0; margin: 0; }
+ul.tick li { padding: 6px 0 6px 20px; position: relative; color: var(--muted-fg); font-size: 15px; }
+ul.tick li::before {
+  content: ""; position: absolute; left: 0; top: 16px;
+  width: 9px; height: 1px; background: var(--bd);
+}
+ul.tick li b { color: var(--fg); }
+
+footer {
+  border-top: 1px solid var(--bd); padding: 28px 0 52px;
+  color: var(--muted-fg); font-size: 13px;
+}
+footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+footer nav { margin-left: auto; display: flex; gap: 16px; flex-wrap: wrap; }
+footer a { color: var(--muted-fg); }
+footer a:hover { color: var(--fg); }
+
+@media (max-width: 640px) {
+  .hero { padding: 56px 0 44px; }
+  section { padding: 44px 0; }
+  .stats { gap: 26px; }
+  .nav { gap: 14px; }
+  .nav nav { gap: 13px; width: 100%; margin-left: 0; }
+  .grid { gap: 0; }
+}
+
+/* ── 圖片：產品實機截圖 ────────────────────────────────────────────────── */
+/* 一條細線收邊，不用陰影（DESIGN.md 的 flat 原則）。
+   ⚠️ 這些是實機截圖，進站之前 IP／序號都已在簡報那邊馬賽克過 —— 換圖時
+   要先確認同一件事，原圖不可以直接放上來。 */
+figure { margin: 0; }
+figure img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--bd); border-radius: var(--radius);
+  background: var(--card);
+}
+figcaption { color: var(--muted-fg); font-size: 13px; margin-top: 10px; }
+
+/* 文字與圖交錯的版塊。窄螢幕自動疊起來，圖在下。 */
+.split {
+  display: grid; gap: 34px; align-items: center;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+.split.flip > figure { order: -1; }
+.split .txt > :last-child { margin-bottom: 0; }
+
+/* 滿版圖：比內容區再寬一些，讓畫面有呼吸 */
+.wide { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+@media (max-width: 760px) {
+  .split { grid-template-columns: 1fr; gap: 22px; }
+  .split.flip > figure { order: 0; }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>下載 — METRIC</title>
+<meta name="description" content="下載 METRIC 安裝檔。安裝檔已內含 Agent，授權檔由技術支援另外提供。">
+<link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
+<link rel="alternate icon" href="brand/favicon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
+      <span>METRIC</span></a>
+    <nav>
+      <a href="index.html">介紹</a>
+      <a href="guide.html">如何使用</a>
+      <a href="download.html" aria-current="page">下載</a>
+      <a href="about.html">關於我</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">下載</p>
+    <h1>一個檔案，裝在伺服器上</h1>
+    <p class="lead">
+      安裝檔已經內含 Agent —— IT 裝完 Portal，員工就能從公司自己的下載頁取得。
+      不需要在這裡另外下載 Agent。
+    </p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>安裝檔</h2>
+    <div id="list"><p style="color:var(--fg2)">讀取版本資訊中…</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>還需要一份授權檔</h2>
+    <p class="note">
+      <b>授權檔（license.json）由技術支援直接交付，不在這一頁。</b>
+      它決定可以開幾個人、用到什麼時候，而且是綁貴公司的 —— 所以不會放在公開頁面上。
+    </p>
+    <p style="margin-top:20px">
+      安裝時可以直接貼上，也可以先留空、裝完再從後台上傳。
+      <a href="guide.html">完整流程看這裡</a>。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>確認檔案沒被動過手腳</h2>
+    <p>每個安裝檔都附一份原廠簽章清單（<span class="mono">.exe.manifest.json</span>），
+       裡面記著該檔案的 SHA-256。下載後可以自己核對：</p>
+    <pre>certutil -hashfile MetricPortalSetup-&lt;版本&gt;.exe SHA256</pre>
+    <p style="color:var(--fg2);font-size:14.5px">
+      算出來的值要與下方顯示的一致。Portal 在安裝更新時<b>本來就會自動驗證這份簽章</b>，
+      驗不過一律拒絕安裝 —— 所以手動核對只是多一層確認，不是必要步驟。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>系統需求</h2>
+    <table>
+      <tr><th></th><th>最低</th><th>建議</th></tr>
+      <tr><td><b>Portal</b>（伺服器）</td>
+          <td>2 vCPU／4 GB／20 GB<br>Windows Server 2019+</td>
+          <td>4 vCPU／8 GB／50 GB SSD</td></tr>
+      <tr><td><b>Agent</b>（每位使用者）</td>
+          <td>4 核／8 GB／10 GB<br>Windows 10／11</td>
+          <td>8 核／16 GB／20 GB SSD</td></tr>
+    </table>
+    <p style="margin-top:20px;color:var(--fg2);font-size:14.5px">
+      Portal 需要管理員權限安裝。Agent 不需要管理員權限，但安裝時要能連網下載執行環境。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span id="src">METRIC</span>
+    <nav>
+      <a id="allrel" href="#">所有版本</a>
+      <a href="guide.html">如何使用</a>
+      <a href="about.html">關於我</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+// ── 版本資訊在瀏覽器端即時抓，不寫死在這一頁 ────────────────────────────
+// 🔴 發新版時**這一頁完全不用改**。靜態下載頁最常見的失效方式就是「改了程式
+// 忘記改頁面」，於是使用者一直下載到舊版，而且沒有人會發現。
+// 抓不到時退回「前往發行頁面」，不要變成一片空白。
+var REPO = "mlmicocake-beep/metric-releases";   // ← 換成實際的公開發行 repo
+var API = "https://api.github.com/repos/" + REPO + "/releases";
+
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,
+  function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function mb(n){ return (n/1048576).toFixed(1) + " MB"; }
+
+function card(a, ver, when){
+  return '<div class="card" style="margin-bottom:12px">'
+    + '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
+    + '<div style="flex:1;min-width:200px">'
+    + '<h3>METRIC Portal' + (ver ? ' <span style="color:var(--fg2);font-weight:400">'
+        + esc(ver) + '</span>' : '') + '</h3>'
+    + '<p>內含 METRIC Agent　·　' + mb(a.size)
+    + (when ? '　·　' + esc(when.slice(0,10)) : '') + '</p>'
+    + '<p class="mono" id="sha" style="margin-top:6px;word-break:break-all"></p>'
+    + '</div>'
+    + '<a class="btn" href="' + esc(a.browser_download_url) + '">下載</a>'
+    + '<a class="btn alt" href="' + esc(a.browser_download_url) + '.manifest.json">簽章清單</a>'
+    + '</div></div>';
+}
+
+document.getElementById("allrel").href = "https://github.com/" + REPO + "/releases";
+fetch(API + "?per_page=5", {headers: {"Accept": "application/vnd.github+json"}})
+  .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(function(rels){
+    var found = null, ver = "", when = "";
+    (rels || []).forEach(function(rel){
+      if (rel.draft || rel.prerelease || found) return;
+      (rel.assets || []).forEach(function(a){
+        if (found) return;
+        if (/^MetricPortalSetup.*\.exe$/i.test(a.name)) {
+          found = a;
+          var m = a.name.match(/(\d+(?:\.\d+){1,3})/);
+          ver = m ? m[1] : "";
+          when = rel.published_at || "";
+        }
+      });
+    });
+    if (!found) throw new Error("沒有可用的安裝檔");
+    document.getElementById("list").innerHTML = card(found, ver, when);
+    document.getElementById("src").textContent = "METRIC　·　" + (ver ? ver : "");
+    // SHA-256 從簽章清單讀出來顯示 —— 使用者要核對的就是這個值
+    fetch(found.browser_download_url + ".manifest.json")
+      .then(function(x){ return x.json(); })
+      .then(function(d){
+        var el = document.getElementById("sha");
+        if (el && d && d.payload && d.payload.sha256)
+          el.textContent = "SHA-256 " + d.payload.sha256;
+      }).catch(function(){});
+  })
+  .catch(function(e){
+    document.getElementById("list").innerHTML =
+      '<p style="color:var(--fg2)">暫時讀不到版本資訊（' + esc(e.message) + '）。</p>'
+      + '<div class="card"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
+      + '<div style="flex:1;min-width:200px"><h3>前往發行頁面</h3>'
+      + '<p>在那裡挑選版本下載</p></div>'
+      + '<a class="btn" href="https://github.com/' + REPO + '/releases">發行頁面</a>'
+      + '</div></div>';
+  });
+</script>
+</body>
+</html>

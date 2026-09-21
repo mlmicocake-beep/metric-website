@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>關於 — METRIC</title>
+<meta name="description" content="METRIC 的設計原則、產品組成與聯絡方式。">
+<link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
+<link rel="alternate icon" href="brand/favicon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html">
+      <img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
+      <span>METRIC</span>
+    </a>
+    <nav>
+      <a href="index.html">介紹</a>
+      <a href="guide.html">如何使用</a>
+      <a href="download.html">下載</a>
+      <a href="about.html" aria-current="page">關於我</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>把 AI 放進公司，而不是把公司資料放出去</h1>
+    <p class="lead">
+      企業要用 AI，第一個問題不是哪個模型強，而是這些對話與檔案會流到哪裡。
+      METRIC 的答案是：不流出去。
+    </p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">設計原則</p>
+    <h2>五條沒有妥協</h2>
+    <ul class="tick">
+      <li><b>預設不對外。</b>要連出去必須是 IT 明確打開的設定，不是沒設定時的預設值。</li>
+      <li><b>金鑰不下發。</b>模型金鑰只存在 Portal 上，不會出現在使用者的電腦裡。</li>
+      <li><b>只裝簽章過的東西。</b>更新檔一律驗原廠簽章 —— 拿到後台密碼也換不掉伺服器。</li>
+      <li><b>不碰公司帳號系統。</b>接 AD 只讀不寫，停權只改 Portal 自己的資料庫。</li>
+      <li><b>壞掉要看得出來。</b>失敗原因顯示在畫面上，不是只寫進 log。</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>產品組成</h2>
+    <table>
+      <tr><th>名稱</th><th>裝在哪</th><th>負責什麼</th></tr>
+      <tr><td><b>METRIC Portal</b></td><td>公司伺服器</td>
+          <td>使用者與權限、模型與額度、用量統計、版本派送</td></tr>
+      <tr><td><b>METRIC Agent</b></td><td>使用者電腦</td>
+          <td>對話、檔案操作、知識庫、排程、聊天機器人</td></tr>
+    </table>
+    <p class="note" style="margin-top:20px">
+      授權檔由我們核發並直接交付，<b>不放在公開的下載頁上</b> —— 它決定席次與期限，
+      而且綁定貴公司的伺服器。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">聯絡</p>
+    <h2>授權、續約、技術支援</h2>
+    <!-- 暫時走 GitHub Issues。確定對外窗口（信箱或表單）之後換掉這一段。 -->
+    <p class="note">
+      請到 <a href="https://github.com/mlmicocake-beep/metric-releases/issues">GitHub Issues</a>
+      開一則問題，我們會在上面回覆。<br>
+      需要 GitHub 帳號。Issue 是公開的 —— 請不要在裡面貼授權檔、金鑰或公司內部位址。
+    </p>
+    <p style="color:var(--muted-fg);font-size:14.5px;margin-top:20px">
+      授權、續約、加席次、換伺服器都走同一個窗口。
+    </p>
+    <div class="cta">
+      <a class="btn" href="download.html">下載</a>
+      <a class="btn alt" href="guide.html">安裝流程</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>METRIC　·　開發：雨宇商務共享</span>
+    <nav>
+      <a href="index.html">介紹</a>
+      <a href="guide.html">如何使用</a>
+      <a href="download.html">下載</a>
+      <a href="about.html">關於我</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

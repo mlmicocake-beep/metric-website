@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>如何使用 — METRIC</title>
+<meta name="description" content="METRIC 的安裝與開通流程：IT 裝 Portal、貼授權、使用者從公司下載頁取得 Agent。">
+<link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
+<link rel="alternate icon" href="brand/favicon.ico">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
+      <span>METRIC</span></a>
+    <nav>
+      <a href="index.html">介紹</a>
+      <a href="guide.html" aria-current="page">如何使用</a>
+      <a href="download.html">下載</a>
+      <a href="about.html">關於我</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">安裝與開通</p>
+    <h1>一台伺服器，一次安裝</h1>
+    <p class="lead">
+      IT 在伺服器上裝一個檔案，貼上我們提供的授權，公司就可以開始用。
+      使用者端不需要 IT 一台一台去裝。
+    </p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">給 IT</p>
+    <h2>伺服器端</h2>
+    <ol class="steps">
+      <li>
+        <h3>拿到兩個檔案</h3>
+        <p>安裝檔（<span class="mono">MetricPortalSetup-*.exe</span>）與授權檔
+           （<span class="mono">license.json</span>）。安裝檔從下載頁取得，
+           <b>授權檔由我們另外提供</b> —— 它是綁貴公司的，不會放在公開的下載頁上。</p>
+      </li>
+      <li>
+        <h3>安裝</h3>
+        <p>用管理員身分執行安裝檔。精靈會問兩件事：</p>
+        <p><b>連線設定</b> —— HTTP／HTTPS 使用哪個埠。不確定就直接下一步用預設值。</p>
+        <p><b>授權檔</b> —— 選剛拿到的 <span class="mono">license.json</span>。
+           還沒拿到也可以留空，裝完再從後台上傳。</p>
+      </li>
+      <li>
+        <h3>登入後台</h3>
+        <p>瀏覽器開 <span class="mono">https://伺服器位址:8788</span>，用預設管理員帳號登入，
+           <b>第一件事是改掉預設密碼</b>。</p>
+        <p>儀表板上會看到授權狀態：剩幾天、已用幾席、綁在哪一台。</p>
+      </li>
+      <li>
+        <h3>設定模型</h3>
+        <p>在「設定中心」填入公司要用的模型來源 —— 可以是公司自己的地端模型，
+           也可以是外部供應商的金鑰。<b>金鑰只存在 Portal 上，不會下發到使用者的電腦。</b></p>
+      </li>
+      <li>
+        <h3>把下載連結給員工</h3>
+        <p><span class="mono">https://伺服器位址:8788/downloads</span></p>
+        <p>安裝 Portal 時已經一併附帶 Agent，所以這一頁馬上就有東西可以下載，
+           不需要另外準備。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">給使用者</p>
+    <h2>自己的電腦</h2>
+    <ol class="steps">
+      <li>
+        <h3>從公司的下載頁下載</h3>
+        <p>用 IT 給的那個公司內部網址。<b>從那裡下載的安裝檔已經知道要連哪一台伺服器</b> ——
+           不需要自己填位址。</p>
+      </li>
+      <li>
+        <h3>安裝</h3>
+        <p>不需要管理員權限。安裝過程會下載執行環境，所以那台電腦要能連網。</p>
+      </li>
+      <li>
+        <h3>送出使用申請</h3>
+        <p>第一次開啟時填寫姓名（或公司帳號，取決於 IT 的設定）並送出。</p>
+      </li>
+      <li>
+        <h3>等 IT 核准</h3>
+        <p>IT 在後台按下核准之後就可以開始使用。<b>一個人一台機器</b> ——
+           換電腦請先請 IT 停用舊的那一台。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">授權</p>
+    <h2>授權檔由我們提供</h2>
+    <p>授權檔決定兩件事：<b>可以開幾個人（席次）</b>與<b>用到什麼時候</b>。
+       它是一份簽章過的檔案，改一個位元組就失效。</p>
+    <table>
+      <tr><th>情況</th><th>怎麼做</th></tr>
+      <tr><td>第一次開通</td><td>我們提供授權檔，安裝時貼上，或裝完從後台上傳</td></tr>
+      <tr><td>續約</td><td>我們提供新的授權檔，在儀表板「更新授權檔」上傳 —— <b>立即生效，不需重啟</b></td></tr>
+      <tr><td>要加席次</td><td>告訴我們要加到幾席，換一份新的授權檔</td></tr>
+      <tr><td>換伺服器</td><td>把新伺服器後台的「本機識別碼」寄給我們，換一份綁新機器的授權檔</td></tr>
+    </table>
+    <p class="note" style="margin-top:20px">
+      <b>到期會停止服務。</b>後台在剩 30 天內開始提醒，設定過信件通知的話也會寄信。
+      到期當天所有人會同時連不上 —— 不是只有新使用者被擋，所以請提前續約。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">更新</p>
+    <h2>兩種方式，由你選</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>離線（出廠預設）</h3>
+        <p>這台伺服器<b>完全不對外連線</b>。新版由我們提供檔案，IT 在後台上傳。
+           適合機房不允許對外連線的環境。</p>
+      </div>
+      <div class="card">
+        <h3>線上</h3>
+        <p>Portal 每 6 小時自己查一次有沒有新版，有就在後台提示。
+           <b>要不要下載、要不要安裝，仍然是 IT 按下去的決定。</b></p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:18px">
+      切到線上模式時需要放行三個網域：<span class="mono">api.github.com</span>、
+      <span class="mono">github.com</span>、<span class="mono">release-assets.githubusercontent.com</span>。
+      每次檢查只會發出一個查詢。
+    </p>
+    <p style="margin-top:22px">
+      使用者端的 Agent 更新<b>一律由公司自己的 Portal 派送</b>，不對外連線。
+      IT 決定什麼時候推、推給誰。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>遇到問題</h2>
+    <table>
+      <tr><th>狀況</th><th>先看這裡</th></tr>
+      <tr><td>使用者連不上</td><td>後台儀表板的授權卡 —— 到期或席次滿了都會在那裡顯示</td></tr>
+      <tr><td>裝完 Agent 問要連哪一台</td><td>那份安裝檔不是從公司下載頁取得的。請用 IT 給的內部網址重新下載</td></tr>
+      <tr><td>下載頁的檔案雜湊跟原檔不同</td><td>正常 —— 檔尾被蓋上了這台 Portal 的位址</td></tr>
+      <tr><td>授權顯示「綁定不符」</td><td>換過伺服器或做過災難復原。把本機識別碼寄給我們重新核發</td></tr>
+    </table>
+    <div class="cta">
+      <a class="btn" href="download.html">下載</a>
+      <a class="btn alt" href="about.html">聯絡我們</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>METRIC</span>
+    <nav>
+      <a href="index.html">介紹</a>
+      <a href="guide.html">如何使用</a>
+      <a href="download.html">下載</a>
+      <a href="about.html">關於我</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
