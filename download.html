@@ -45,10 +45,10 @@
 <div class="hero">
   <div class="wrap">
     <p class="eyebrow">下載</p>
-    <h1>一個檔案，裝在伺服器上</h1>
+    <h1>一個檔案，裝在你們自己的伺服器上</h1>
     <p class="lead">
-      安裝檔已經內含 Agent —— IT 裝完 Portal，員工就能從公司自己的下載頁取得。
-      不需要在這裡另外下載 Agent。
+      這個安裝檔裡面已經附了給同事用的版本。
+      IT 把伺服器裝好之後，大家就能從公司自己的下載頁拿，不用再回來這裡下載一次。
     </p>
   </div>
 </div>
@@ -62,13 +62,13 @@
 
 <section>
   <div class="wrap">
-    <h2>還需要一份授權檔</h2>
+    <h2>還差一份授權檔</h2>
     <p class="note">
-      <b>授權檔（license.json）由技術支援直接交付，不在這一頁。</b>
-      它決定可以開幾個人、用到什麼時候，而且是綁貴公司的 —— 所以不會放在公開頁面上。
+      <b>授權檔（license.json）我們會直接交給你們，所以這一頁上沒有。</b>
+      它決定了可以開幾個人、用到什麼時候，而且是綁你們公司的，放在公開頁面上並不合適。
     </p>
     <p style="margin-top:20px">
-      安裝時可以直接貼上，也可以先留空、裝完再從後台上傳。
+      安裝的時候可以直接貼上去；還沒拿到也沒關係，先留空，裝完再從後台補上就好。
       <a href="guide.html">完整流程看這裡</a>。
     </p>
   </div>
@@ -76,14 +76,15 @@
 
 <section>
   <div class="wrap">
-    <h2>確認檔案沒被動過手腳</h2>
-    <p>每個安裝檔都附一份原廠簽章清單（<span class="mono">.exe.manifest.json</span>），
-       裡面記著該檔案的 SHA-256。下載後可以自己核對：</p>
+    <h2>想確認檔案沒被動過手腳？</h2>
+    <p>每個安裝檔都配了一份我們簽過名的清單（<span class="mono">.exe.manifest.json</span>），
+       裡面寫著這個檔案的 SHA-256。下載完想自己對一下的話：</p>
     <pre>certutil -hashfile MetricPortalSetup-&lt;版本&gt;.exe SHA256</pre>
     <p style="color:var(--fg2);font-size:14.5px">
-算出來的值要與簽章清單裡的 <span class="mono">sha256</span> 一致
-      —— 按上面的「簽章清單」就會打開那個檔。Portal 在安裝更新時<b>本來就會自動驗證這份簽章</b>，
-      驗不過一律拒絕安裝 —— 所以手動核對只是多一層確認，不是必要步驟。
+算出來的值，應該要跟簽章清單裡的 <span class="mono">sha256</span> 一模一樣
+      （按上面那顆「簽章清單」就會打開那個檔）。
+      其實不對也沒關係 —— Portal 在安裝更新的時候<b>本來就會自己驗一次</b>，
+      驗不過就直接拒絕安裝。手動核對只是讓你更安心，不是必要步驟。
     </p>
   </div>
 </section>
@@ -101,7 +102,8 @@
           <td>8 核／32 GB／50 GB SSD</td></tr>
     </table>
     <p style="margin-top:20px;color:var(--fg2);font-size:14.5px">
-      Portal 需要管理員權限安裝。Agent 不需要管理員權限，但安裝時要能連網下載執行環境。
+      伺服器那一套需要管理員權限才裝得起來。
+      同事電腦上那一套不用，但安裝過程要能連上網路下載執行環境。
     </p>
   </div>
 </section>

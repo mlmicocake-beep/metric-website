@@ -1,40 +1,54 @@
-/* METRIC 官方網站 —— 與 Agent 桌面 GUI 對齊
+/* METRIC 官方網站
  *
- * 色票與字體不是自己挑的，直接取自產品的主題定義：
- * `apps/desktop/src/themes/presets.ts` 的 `nousTheme`
- * （label「Metric」、描述「GitHub chrome, Metric blue accent」）。
- * 網站與產品要長得像同一個東西，所以這裡**不另立一套色**。
+ * 色票取自產品的主題定義（`apps/desktop/src/themes/presets.ts` 的 `nousTheme`）
+ * 再收斂成營運裁示的全線黑白：#010101 ／ #ffffff。網站與產品要長得像同一個
+ * 東西，所以這裡**不另立一套色**。
  *
- * 排版規則取自 `apps/desktop/DESIGN.md`，三條直接影響這一份：
+ * 排版規則取自 `apps/desktop/DESIGN.md`：
+ *   1. **Flat, not boxed.** 不要卡片套卡片。分組用留白與單一細線，不要一層層方塊。
+ *   2. **文字按鈕不做圓角**，尺寸由 padding × line-height 決定，不給固定高度。
+ *   3. **Tokens, not literals.** 顏色一律走 CSS 變數。
  *
- *   1. **Flat, not boxed.** 不要卡片套卡片、不要在同一塊裡面加分隔框。
- *      分組只用留白與**單一細線**，不要一層層的圓角方塊。
- *   2. **文字按鈕不做圓角**，靠 padding 與 line-height 決定尺寸、不給固定高度。
- *      只有圖示按鈕用共用的 4px 圓角。
- *   3. **Tokens, not literals.** 顏色一律走 CSS 變數，元件裡不寫死色值。
+ * 🔴 2026-09-21 營運裁示：**漸層、陰影、發光解禁。**（先前的「一律不得使用」
+ * 已撤銷。）但兩件事沒有跟著解禁：
+ *   - **配色仍然只有黑與白。** 漸層是黑到透明、白到透明，不引入第三個色相。
+ *   - **紅色仍然只出現在標誌本體。** 不拿紅當強調色。
  *
- * 🔴 品牌紅（#872E2E／#C8393E）**只出現在標誌本體**。品牌規範是「紅色僅用於
- * 需要人處理的事項」，所以強調色用圖示的黑白（深底用白），不是紅。
- * 也不得加漸層、陰影、發光 —— 整份沒有一個 box-shadow／gradient。
- *
- * ⚠️ 字體刻意不載 Google Fonts。產品主題有掛 Courier Prime 的 webfont，但那只
- * 影響等寬字；為了一個細節讓每個訪客多連一次外部網域不值得。字體堆疊與產品
- * 一致，有裝就用、沒裝就退回系統等寬字。
+ * 🔴 效果一律走變數（--glow／--elev-1／--elev-2／--rule），不要在元件裡寫死
+ * rgba。深色模式整組換過一次 —— 淺色底用黑影，深色底用白光，同一組數值
+ * 直接套過去會變成「深色模式什麼都看不到」。
  */
 
 :root {
-  /* 黑白：白底黑字（淺色） */
   --bg: #ffffff;
   --fg: #010101;
-  --card: #f5f5f5;
+  --card: #f7f7f7;
   --muted-fg: #6b6b6b;
   --bd: #e0e0e0;
+  --bd-faint: #ededed;
   --primary: #010101;
   --primary-fg: #ffffff;
 
+  /* 效果：淺色底＝黑影。數值刻意壓很低，要的是深度不是戲劇性。 */
+  --elev-1: 0 1px 2px rgba(1, 1, 1, .04), 0 8px 24px -12px rgba(1, 1, 1, .12);
+  --elev-2: 0 2px 4px rgba(1, 1, 1, .05), 0 24px 56px -20px rgba(1, 1, 1, .22);
+  --glow: 0 0 0 1px rgba(1, 1, 1, .08), 0 8px 32px -8px rgba(1, 1, 1, .28);
+  /* 主角光：hero 背後那一團。淺色底是極淡的灰暈。 */
+  --halo: radial-gradient(60% 55% at 50% 0%, rgba(1, 1, 1, .07) 0%, transparent 72%);
+  /* 細線：兩端淡出的漸層線，比死板的一條實線細緻 */
+  --rule: linear-gradient(90deg, transparent, var(--bd) 12%, var(--bd) 88%, transparent);
+  --text-sheen: linear-gradient(180deg, var(--fg) 30%, color-mix(in srgb, var(--fg) 45%, var(--bg)) 100%);
+
   --max: 880px;
-  /* DESIGN.md：共用圓角 4px，而且只有圖示按鈕用 —— 文字按鈕是方的。 */
+  --max-wide: 1100px;
   --radius: 4px;
+
+  --s1: 6px;
+  --s2: 12px;
+  --s3: 20px;
+  --s4: 34px;
+  --s5: 56px;
+  --s6: 92px;
 
   --sans: "Segoe WPC", "Segoe UI", -apple-system, BlinkMacSystemFont,
           "SF Pro Text", "SF Pro Display", system-ui, "Noto Sans TC",
@@ -42,186 +56,387 @@
   --mono: Menlo, Monaco, "SF Mono", "Courier Prime", Consolas, monospace;
 }
 
+/* 🔴 深色模式不是把上面那組照抄。黑底上的黑影＝看不見，所以改成白光。 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* 黑白：黑底白字（深色） */
     --bg: #010101;
     --fg: #ffffff;
     --card: #0d0d0d;
     --muted-fg: #8a8a8a;
     --bd: #2e2e2e;
+    --bd-faint: #1c1c1c;
     --primary: #ffffff;
     --primary-fg: #010101;
+
+    --elev-1: 0 1px 2px rgba(0, 0, 0, .6), 0 8px 24px -12px rgba(0, 0, 0, .9);
+    --elev-2: 0 2px 4px rgba(0, 0, 0, .7), 0 24px 56px -20px rgba(0, 0, 0, 1);
+    --glow: 0 0 0 1px rgba(255, 255, 255, .14), 0 8px 34px -6px rgba(255, 255, 255, .22);
+    --halo: radial-gradient(60% 55% at 50% 0%, rgba(255, 255, 255, .11) 0%, transparent 72%);
   }
+}
+:root[data-theme="dark"] {
+  --bg: #010101;
+  --fg: #ffffff;
+  --card: #0d0d0d;
+  --muted-fg: #8a8a8a;
+  --bd: #2e2e2e;
+  --bd-faint: #1c1c1c;
+  --primary: #ffffff;
+  --primary-fg: #010101;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, .6), 0 8px 24px -12px rgba(0, 0, 0, .9);
+  --elev-2: 0 2px 4px rgba(0, 0, 0, .7), 0 24px 56px -20px rgba(0, 0, 0, 1);
+  --glow: 0 0 0 1px rgba(255, 255, 255, .14), 0 8px 34px -6px rgba(255, 255, 255, .22);
+  --halo: radial-gradient(60% 55% at 50% 0%, rgba(255, 255, 255, .11) 0%, transparent 72%);
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 16px/1.7 var(--sans);
+  font: 16px/1.75 var(--sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+::selection { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
-/* ── 頂欄：單一細線收邊，不用陰影（flat 原則）─────────────────────────── */
+/* ── 頂欄 ──────────────────────────────────────────────────────────────── */
+/* 半透明＋背景模糊，捲動時內容從底下透出來。細線用漸層，兩端淡出。 */
 header {
-  border-bottom: 1px solid var(--bd);
-  position: sticky; top: 0; z-index: 10; background: var(--bg);
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+}
+header::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--rule);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  header { background: var(--bg); }
 }
 .nav {
-  max-width: 1100px; margin: 0 auto; padding: 12px 24px;
+  max-width: var(--max-wide); margin: 0 auto; padding: 14px 24px;
   display: flex; align-items: center; gap: 26px;
 }
-.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
 /* 標誌＝產品實際在用的那個圖示：圓形、黑底、白色波形（metric-badge-ink.svg，
    與出貨的 portal-icon.ico 同一個）。
-   ⚠️ 兩個容易拿錯的鄰居：metric-app-icon.svg 是圓角方形＋紅波形；
-   metric-lockup-*.svg 分深淺兩版，忘記切換會在其中一種模式下整個看不見。
-   規範第 5 條：符號周圍留白 ≥ 波形高度 1/4（用外距給出來）。 */
-.brand .mark { width: 26px; height: 26px; display: block; border-radius: 50%; margin: 3px 0; }
-.brand span { font-weight: 600; letter-spacing: .14em; font-size: 14px; color: var(--fg); }
-.nav nav { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+   ⚠️ 容易拿錯的鄰居：metric-app-icon.svg 是圓角方形＋紅波形。
+   規範：符號周圍留白 ≥ 波形高度 1/4（用外距給出來）。 */
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand .mark {
+  width: 26px; height: 26px; display: block; border-radius: 50%; margin: 3px 0;
+  transition: box-shadow .25s ease;
+}
+.brand:hover .mark { box-shadow: var(--glow); }
+.brand span { font-weight: 600; letter-spacing: .16em; font-size: 14px; color: var(--fg); }
+.nav nav { margin-left: auto; display: flex; gap: 22px; flex-wrap: wrap; }
 .nav nav a {
   color: var(--muted-fg); text-decoration: none; font-size: 14px;
-  padding: 3px 0; border-bottom: 2px solid transparent;
+  padding: 4px 0; border-bottom: 1px solid transparent;
+  transition: color .18s ease, border-color .18s ease;
 }
-.nav nav a:hover { color: var(--fg); }
+.nav nav a:hover { color: var(--fg); border-bottom-color: var(--bd); text-decoration: none; }
 .nav nav a[aria-current="page"] { color: var(--fg); border-bottom-color: var(--primary); }
 
-/* ── 版塊 ────────────────────────────────────────────────────────────── */
-section { padding: 60px 0; border-top: 1px solid var(--bd); }
-.hero { padding: 88px 0 72px; }
+/* ── 版塊 ──────────────────────────────────────────────────────────────── */
+section { padding: var(--s6) 0; position: relative; }
+section::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: var(--rule);
+}
+
+/* Hero：背後一團光暈。不是裝飾 —— 它把視線帶到標題上。 */
+.hero {
+  padding: calc(var(--s6) + 34px) 0 var(--s6);
+  position: relative; isolation: isolate;
+}
+.hero::before {
+  content: ""; position: absolute; inset: -20% 0 0; z-index: -1;
+  background: var(--halo); pointer-events: none;
+}
+
+/* 反轉版塊：黑白對調＋一層漸層讓它不是死板的一塊黑 */
+section.invert {
+  background: var(--fg); color: var(--bg); border-top: 0;
+  --muted-fg: color-mix(in srgb, var(--bg) 62%, var(--fg));
+  --bd: color-mix(in srgb, var(--bg) 26%, var(--fg));
+  --bd-faint: color-mix(in srgb, var(--bg) 14%, var(--fg));
+  --primary: var(--bg);
+  --primary-fg: var(--fg);
+}
+section.invert::before { display: none; }
+section.invert h1, section.invert h2, section.invert h3, section.invert b { color: var(--bg); }
+
+/* 🔴 深色模式不要真的翻成整片白 —— 在暗房裡看網站時那是一記閃光燈。
+   改成「比頁面再亮一階的面板」＋上緣一道光暈，一樣是強調，但不刺眼。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) section.invert {
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--fg) 9%, var(--bg)) 0%,
+      color-mix(in srgb, var(--fg) 4%, var(--bg)) 100%);
+    color: var(--fg);
+    --muted-fg: #8a8a8a;
+    --bd: #333333;
+    --bd-faint: #242424;
+    --primary: #ffffff;
+    --primary-fg: #010101;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16);
+  }
+  :root:not([data-theme="light"]) section.invert h1,
+  :root:not([data-theme="light"]) section.invert h2,
+  :root:not([data-theme="light"]) section.invert h3,
+  :root:not([data-theme="light"]) section.invert b,
+  :root:not([data-theme="light"]) section.invert ul.tick li b { color: var(--fg); }
+}
 
 h1 {
-  font-size: clamp(29px, 4.6vw, 42px); line-height: 1.2;
-  margin: 0 0 18px; letter-spacing: -.015em; font-weight: 600;
+  font-size: clamp(32px, 5.4vw, 54px); line-height: 1.12;
+  margin: 0 0 var(--s3); letter-spacing: -.03em; font-weight: 600;
+  max-width: 20ch;
+  /* 大字給一點縱向漸層，讓它有重量。純黑白，不引入色相。 */
+  background: var(--text-sheen);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
 }
+section.invert h1, section.invert h2 { background: none; color: var(--bg); }
 h2 {
-  font-size: clamp(20px, 2.6vw, 25px); line-height: 1.32;
-  margin: 0 0 16px; font-weight: 600; letter-spacing: -.01em;
+  font-size: clamp(22px, 3vw, 31px); line-height: 1.24;
+  margin: 0 0 var(--s3); font-weight: 600; letter-spacing: -.022em;
+  max-width: 26ch;
 }
-h3 { font-size: 15.5px; margin: 0 0 6px; font-weight: 600; }
-p { margin: 0 0 16px; }
-.lead { font-size: 17.5px; color: var(--muted-fg); max-width: 62ch; }
-.eyebrow {
-  font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--muted-fg); margin: 0 0 12px; font-weight: 600;
-}
-a { color: var(--primary); text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: 3px; }
+h3 { font-size: 16px; margin: 0 0 var(--s1); font-weight: 600; letter-spacing: -.01em; }
+p { margin: 0 0 var(--s3); }
+.lead { font-size: 18.5px; line-height: 1.68; color: var(--muted-fg); max-width: 58ch; }
 
-/* ── 按鈕：文字按鈕是方的，尺寸由 padding × line-height 決定，不給固定高度 ── */
-.cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.eyebrow {
+  font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted-fg); margin: 0 0 var(--s2); font-weight: 600;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before {
+  content: ""; width: 26px; height: 1px; flex: none;
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+a { color: var(--primary); text-decoration: none; }
+a:not(.btn):not(.brand) {
+  text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 3px; text-decoration-color: var(--bd);
+  transition: text-decoration-color .18s ease;
+}
+.nav nav a, footer nav a { text-decoration: none; }
+a:not(.btn):not(.brand):hover { text-decoration-color: currentColor; }
+
+/* ── 按鈕 ──────────────────────────────────────────────────────────────── */
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: var(--s4); }
 .btn {
-  display: inline-block; padding: 9px 20px; border-radius: 0;
+  display: inline-block; padding: 12px 26px; border-radius: 0;
   font-weight: 600; font-size: 14.5px; line-height: 1.5; text-decoration: none;
   background: var(--primary); color: var(--primary-fg);
   border: 1px solid var(--primary);
+  box-shadow: var(--elev-1);
+  transition: box-shadow .22s ease, transform .22s ease, background .18s ease,
+              color .18s ease, border-color .18s ease;
 }
-.btn:hover { filter: brightness(1.08); text-decoration: none; }
-.btn.alt { background: transparent; color: var(--fg); border-color: var(--bd); }
-.btn.alt:hover { border-color: var(--fg); filter: none; }
+.btn:hover {
+  box-shadow: var(--glow); transform: translateY(-1px); text-decoration: none;
+}
+.btn:active { transform: none; box-shadow: var(--elev-1); }
+.btn.alt {
+  background: transparent; color: var(--fg); border-color: var(--bd); box-shadow: none;
+}
+.btn.alt:hover { border-color: var(--fg); box-shadow: var(--elev-1); }
 
-/* ── 分組：不用卡片外框，用留白與單一細線 ──────────────────────────────── */
-.grid { display: grid; gap: 0 36px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-.card { padding: 20px 0; border-top: 1px solid var(--bd); }
+/* ── 分組 ──────────────────────────────────────────────────────────────── */
+.grid { display: grid; gap: 0 var(--s5); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.card {
+  padding: var(--s4) 0; position: relative;
+  transition: transform .22s ease;
+}
+.card::before {
+  content: ""; position: absolute; left: 0; right: var(--s5); top: 0; height: 1px;
+  background: linear-gradient(90deg, var(--bd), transparent);
+  transition: background .25s ease;
+}
+.card:hover { transform: translateY(-2px); }
+.card:hover::before { background: linear-gradient(90deg, var(--fg), transparent); }
 .card p { margin: 0; color: var(--muted-fg); font-size: 14.5px; }
-.card h3 { color: var(--fg); }
+.card h3 { color: var(--fg); margin-bottom: var(--s1); }
 
-.stats { display: flex; gap: 46px; flex-wrap: wrap; margin-top: 6px; }
-.stat .n { font-size: 29px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
-.stat .l { font-size: 12.5px; color: var(--muted-fg); margin-top: 3px; }
+/* 數字：這一站最大的字。 */
+.stats { display: flex; flex-wrap: wrap; margin-top: var(--s4); position: relative; }
+.stats::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: var(--rule);
+}
+.stat {
+  padding: var(--s4) var(--s5) var(--s3) 0;
+  margin-right: var(--s5); position: relative;
+}
+.stat::after {
+  content: ""; position: absolute; right: 0; top: var(--s4); bottom: var(--s3); width: 1px;
+  background: linear-gradient(180deg, var(--bd), transparent);
+}
+.stat:last-child { margin-right: 0; padding-right: 0; }
+.stat:last-child::after { display: none; }
+.stat .n {
+  font-size: clamp(40px, 6.2vw, 60px); font-weight: 600; line-height: 1;
+  letter-spacing: -.05em; font-variant-numeric: tabular-nums;
+  background: var(--text-sheen);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.stat .l {
+  font-size: 12px; color: var(--muted-fg); margin-top: var(--s2);
+  letter-spacing: .08em; text-transform: uppercase;
+}
 
-/* 步驟：一條細線串起來 */
+/* 步驟 */
 ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
 ol.steps > li {
   counter-increment: s; position: relative;
-  padding: 0 0 24px 40px; border-left: 1px solid var(--bd); margin-left: 11px;
+  padding: 0 0 var(--s5) 46px; margin-left: 12px;
+  border-left: 1px solid transparent;
+  background: linear-gradient(180deg, var(--bd), var(--bd)) left / 1px 100% no-repeat;
 }
-ol.steps > li:last-child { border-left-color: transparent; padding-bottom: 0; }
+ol.steps > li:last-child {
+  padding-bottom: 0;
+  background: linear-gradient(180deg, var(--bd), transparent 70%) left / 1px 100% no-repeat;
+}
 ol.steps > li::before {
-  content: counter(s); position: absolute; left: -11px; top: 1px;
-  width: 21px; height: 21px; border-radius: 50%;
+  content: counter(s); position: absolute; left: -12px; top: 0;
+  width: 24px; height: 24px; border-radius: 50%;
   background: var(--bg); border: 1px solid var(--bd); color: var(--muted-fg);
   font-size: 11.5px; font-weight: 600; display: grid; place-items: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--elev-1); transition: box-shadow .22s ease, color .22s ease;
 }
-ol.steps h3 { margin: 0 0 5px; }
-ol.steps p { color: var(--muted-fg); font-size: 14.5px; margin: 0 0 5px; }
+ol.steps > li:hover::before { color: var(--fg); box-shadow: var(--glow); }
+ol.steps h3 { margin: 0 0 var(--s1); }
+ol.steps p { color: var(--muted-fg); font-size: 14.5px; margin: 0 0 var(--s1); }
+ol.steps p:last-child { margin-bottom: 0; }
 
-/* 表格：只有橫線，沒有外框 */
+/* 表格 */
 table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
-th, td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--bd); vertical-align: top; }
-th { color: var(--muted-fg); font-weight: 600; font-size: 12.5px; }
-td:first-child { white-space: nowrap; }
+th, td {
+  text-align: left; padding: var(--s3) var(--s4) var(--s3) 0;
+  border-bottom: 1px solid var(--bd-faint); vertical-align: top;
+}
+tr:first-child th { border-bottom-color: var(--bd); }
+th {
+  color: var(--muted-fg); font-weight: 600; font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase; padding-top: 0;
+}
+td:first-child { white-space: nowrap; color: var(--fg); }
+tr:last-child td { border-bottom: 0; }
 
 .mono { font-family: var(--mono); font-size: 13px; }
 pre {
   background: var(--card); border: 1px solid var(--bd); border-radius: var(--radius);
-  padding: 14px 16px; overflow-x: auto; margin: 0 0 16px;
-  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  padding: var(--s3); overflow-x: auto; margin: 0 0 var(--s3);
+  font-family: var(--mono); font-size: 13px; line-height: 1.7;
+  box-shadow: var(--elev-1);
 }
-/* 提示：左側一條主色細線，不做整框（flat 原則） */
 .note {
-  border-left: 2px solid var(--primary); padding: 2px 0 2px 16px;
-  color: var(--muted-fg); font-size: 14.5px; margin: 0 0 16px;
+  border-left: 2px solid var(--primary); padding: var(--s1) 0 var(--s1) var(--s3);
+  color: var(--muted-fg); font-size: 14.5px; margin: 0 0 var(--s3); max-width: 62ch;
 }
 .note b { color: var(--fg); }
 
 ul.tick { list-style: none; padding: 0; margin: 0; }
-ul.tick li { padding: 6px 0 6px 20px; position: relative; color: var(--muted-fg); font-size: 15px; }
-ul.tick li::before {
-  content: ""; position: absolute; left: 0; top: 16px;
-  width: 9px; height: 1px; background: var(--bd);
+ul.tick li {
+  padding: var(--s3) 0 var(--s3) 32px; position: relative;
+  color: var(--muted-fg); font-size: 15.5px; line-height: 1.7;
+  border-bottom: 1px solid var(--bd-faint);
 }
-ul.tick li b { color: var(--fg); }
+ul.tick li:last-child { border-bottom: 0; }
+ul.tick li::before {
+  content: ""; position: absolute; left: 0; top: 30px; width: 16px; height: 1px;
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+ul.tick li b { color: var(--fg); display: block; margin-bottom: 2px; }
+section.invert ul.tick li b { color: var(--bg); }
 
 footer {
-  border-top: 1px solid var(--bd); padding: 28px 0 52px;
-  color: var(--muted-fg); font-size: 13px;
+  padding: var(--s5) 0 var(--s6); color: var(--muted-fg); font-size: 13px;
+  position: relative;
 }
-footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
-footer nav { margin-left: auto; display: flex; gap: 16px; flex-wrap: wrap; }
+footer::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: var(--rule);
+}
+footer .wrap { display: flex; gap: var(--s3); flex-wrap: wrap; align-items: center; }
+footer nav { margin-left: auto; display: flex; gap: var(--s3); flex-wrap: wrap; }
 footer a { color: var(--muted-fg); }
 footer a:hover { color: var(--fg); }
 
-@media (max-width: 640px) {
-  .hero { padding: 56px 0 44px; }
-  section { padding: 44px 0; }
-  .stats { gap: 26px; }
-  .nav { gap: 14px; }
-  .nav nav { gap: 13px; width: 100%; margin-left: 0; }
-  .grid { gap: 0; }
-}
-
-/* ── 圖片：產品實機截圖 ────────────────────────────────────────────────── */
-/* 一條細線收邊，不用陰影（DESIGN.md 的 flat 原則）。
-   ⚠️ 這些是實機截圖，進站之前 IP／序號都已在簡報那邊馬賽克過 —— 換圖時
-   要先確認同一件事，原圖不可以直接放上來。 */
+/* ── 圖片 ──────────────────────────────────────────────────────────────── */
+/* ⚠️ 這些是實機截圖，IP／序號都已遮蔽 —— 換圖時要先確認同一件事。 */
 figure { margin: 0; }
 figure img {
   display: block; width: 100%; height: auto;
   border: 1px solid var(--bd); border-radius: var(--radius);
   background: var(--card);
+  box-shadow: var(--elev-2);
 }
-figcaption { color: var(--muted-fg); font-size: 13px; margin-top: 10px; }
+figcaption { color: var(--muted-fg); font-size: 13px; margin-top: var(--s2); }
 
-/* 文字與圖交錯的版塊。窄螢幕自動疊起來，圖在下。 */
 .split {
-  display: grid; gap: 34px; align-items: center;
+  display: grid; gap: var(--s5); align-items: center;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
 }
 .split.flip > figure { order: -1; }
 .split .txt > :last-child { margin-bottom: 0; }
 
-/* 滿版圖：比內容區再寬一些，讓畫面有呼吸 */
-.wide { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.wide { max-width: var(--max-wide); margin: 0 auto; padding: 0 24px; }
+
+/* ── 進場：捲到才浮現。純 CSS，沒有 JS。 ──────────────────────────────── */
+/* 🔴 只在瀏覽器真的支援時才把初始狀態設成透明 —— 否則不支援的瀏覽器
+   會看到一片空白。Safari／Firefox 目前是直接顯示，那是刻意的降級。 */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    section > .wrap > *, section > .wide, .hero > .wrap > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
 
 @media (max-width: 760px) {
-  .split { grid-template-columns: 1fr; gap: 22px; }
+  .split { grid-template-columns: 1fr; gap: var(--s4); }
   .split.flip > figure { order: 0; }
+}
+
+@media (max-width: 640px) {
+  :root { --s5: 36px; --s6: 52px; }
+  .hero { padding: var(--s6) 0 calc(var(--s6) - 12px); }
+  h1 { max-width: none; }
+  /* flex-wrap：真機字體比模擬器寬時，讓導覽列掉到第二行，
+     而不是被 flex 擠扁到看不清楚。 */
+  .nav { gap: 10px 14px; padding: 12px 20px; flex-wrap: wrap; }
+  .nav nav { gap: 16px; margin-left: auto; }
+  .wrap, .wide { padding: 0 20px; }
+  .grid { gap: 0; }
+  .card::before { right: 0; }
+  .stats { margin-top: var(--s3); }
+  .stat { padding: var(--s3) var(--s4) var(--s2) 0; margin-right: var(--s4); }
+  .stat::after { top: var(--s3); bottom: var(--s2); }
+  th, td { padding-right: var(--s3); }
+  td:first-child { white-space: normal; }
 }
