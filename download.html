@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>下載 — METRIC</title>
-<meta name="description" content="下載 METRIC 安裝檔：同捆包（Portal＋Agent＋簽章清單）與每一個版本的個別檔案。授權檔由技術支援另外提供。">
+<meta name="description" content="下載 METRIC 安裝檔。Portal 的安裝檔已內含 Agent，第一次安裝下載它就夠了；另有不含 Agent 的 Portal 單機版與 Agent 單獨安裝檔。授權檔由技術支援另外提供。">
 <link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
 <link rel="alternate icon" href="brand/favicon.ico">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="METRIC">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:title" content="下載 — METRIC">
-<meta property="og:description" content="下載 METRIC 安裝檔：同捆包（Portal＋Agent＋簽章清單）與每一個版本的個別檔案。">
+<meta property="og:description" content="下載 METRIC 安裝檔。Portal 的安裝檔已內含 Agent，第一次安裝下載它就夠了。">
 <meta property="og:url" content="https://mlmicocake-beep.github.io/metric-website/download.html">
 <meta property="og:image" content="https://mlmicocake-beep.github.io/metric-website/brand/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -53,11 +53,11 @@
 <div class="hero">
   <div class="wrap">
     <p class="eyebrow">下載</p>
-    <h1>兩個安裝檔，一個同捆包</h1>
+    <h1>第一次安裝，下載 Portal 就夠了</h1>
     <p class="lead">
-      伺服器裝 Portal，同事的電腦裝 Agent。同捆包把兩個安裝檔和它們的簽章清單打包成一個 zip，
-      拿一次就齊了。IT 把伺服器裝好之後，同事可以改從公司自己的下載頁拿 Agent ——
-      那一份已經帶好伺服器位址，不用再回來這裡。
+      Portal 的安裝檔裡已經內含同一版的 Agent —— 伺服器裝好之後，公司的下載頁馬上就有
+      Agent 可以拿，而且那一份會自動帶上你們伺服器的位址，同事安裝時不用手動填。
+      下面另外兩個是給特殊情況用的。
     </p>
   </div>
 </div>
@@ -72,7 +72,7 @@
 <section>
   <div class="wrap">
     <h2>所有版本</h2>
-    <p class="dim" style="font-size:14.5px">每一版都留著，要退回舊版或補裝舊機器都從這裡拿。同捆包是那一版的 Portal＋Agent＋簽章清單。</p>
+    <p class="dim" style="font-size:14.5px">每一版都留著，要退回舊版或補裝舊機器都從這裡拿。「Portal」那一欄就是內含 Agent 的完整安裝檔。</p>
     <div id="all"><p class="dim">讀取中…</p></div>
   </div>
 </section>
@@ -142,8 +142,14 @@
 // 忘記改頁面」，於是使用者一直下載到舊版，而且沒有人會發現。
 // 抓不到時退回「前往發行頁面」，不要變成一片空白。
 //
-// 每個 release 有四個檔（Portal exe＋清單、Agent exe＋清單）加一個同捆包 zip。
-// 同捆包不是必然存在（早期 release 可能沒補），缺了就只列個別檔。
+// 一個 release 有三個安裝檔，各配一份簽章清單：
+//   MetricPortalSetup-<版>.exe              Portal，**內含同一版的 Agent**（第一次安裝用這個）
+//   MetricPortalSetup-<版>-portal-only.exe  Portal，不含 Agent（只升 Portal 用）
+//   Metric-Setup-<版>.exe                   Agent 單獨的安裝檔
+// 🔴 兩個 Portal 檔名都以 MetricPortalSetup 開頭 —— 先認 -portal-only，否則它會被
+// 當成一般的 Portal，畫面上兩個位置都顯示同一個檔。
+// 2026-09-21 前還有一個 zip 同捆包，已經拿掉：Portal 安裝檔本身就內含 Agent，
+// 再打一層 zip 只是把同一份東西給兩次。
 var REPO = "mlmicocake-beep/metric-releases";
 var API = "https://api.github.com/repos/" + REPO + "/releases";
 
@@ -154,42 +160,55 @@ function ver(name){ var m = String(name).match(/(\d+(?:\.\d+){1,3})/); return m 
 
 // 把一個 release 的附件分門別類。
 function sortAssets(rel){
-  var out = {bundle:null, portal:null, portalManifest:null, agent:null, agentManifest:null, other:[]};
+  var out = {portal:null, portalManifest:null, portalOnly:null, portalOnlyManifest:null,
+             agent:null, agentManifest:null, other:[]};
   (rel.assets || []).forEach(function(a){
-    var n = a.name;
-    if (/^METRIC-Bundle.*\.zip$/i.test(n)) out.bundle = a;
-    else if (/^MetricPortalSetup.*\.exe$/i.test(n)) out.portal = a;
-    else if (/^MetricPortalSetup.*\.manifest\.json$/i.test(n)) out.portalManifest = a;
-    else if (/^Metric-Setup.*\.exe$/i.test(n)) out.agent = a;
-    else if (/^Metric-Setup.*\.manifest\.json$/i.test(n)) out.agentManifest = a;
-    else out.other.push(a);
+    var n = a.name, manifest = /\.manifest\.json$/i.test(n);
+    if (/^MetricPortalSetup.*-portal-only\.exe/i.test(n)) {
+      if (manifest) { out.portalOnlyManifest = a; } else { out.portalOnly = a; }
+    } else if (/^MetricPortalSetup/i.test(n) && /\.exe/i.test(n)) {
+      if (manifest) { out.portalManifest = a; } else { out.portal = a; }
+    } else if (/^Metric-Setup/i.test(n) && /\.exe/i.test(n)) {
+      if (manifest) { out.agentManifest = a; } else { out.agent = a; }
+    } else { out.other.push(a); }
   });
   return out;
 }
 
-function fileRow(label, a, manifest){
-  if (!a) return "";
-  return '<div class="n">' + esc(label) + '　<span class="mono">' + esc(a.name) + '</span>　·　' + mb(a.size) + '</div>'
-    + '<a class="btn alt" href="' + esc(a.browser_download_url) + '">下載</a>'
-    + (manifest ? '<a class="btn alt" href="' + esc(manifest.browser_download_url) + '">簽章清單</a>' : '<span></span>');
+// 一張卡＝一個下載選項。primary 那張按鈕是實心的，其餘是次要樣式。
+function downloadCard(o){
+  if (!o.asset) return "";
+  return '<div class="card" style="margin-bottom:12px">'
+    + '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
+    + '<div style="flex:1;min-width:240px">'
+    + '<h3>' + esc(o.title) + (o.badge ? ' <span class="dim" style="font-weight:400;font-size:14px">' + esc(o.badge) + '</span>' : '') + '</h3>'
+    + '<p>' + esc(o.blurb) + '</p>'
+    + '<p class="dim" style="font-size:13.5px;margin-top:6px"><span class="mono">' + esc(o.asset.name) + '</span>　·　' + mb(o.asset.size) + '</p>'
+    + '</div>'
+    + '<a class="btn' + (o.primary ? '' : ' alt') + '" href="' + esc(o.asset.browser_download_url) + '">下載</a>'
+    + (o.manifest ? '<a class="btn alt" href="' + esc(o.manifest.browser_download_url) + '">簽章清單</a>' : '')
+    + '</div></div>';
 }
 
-function latestCard(rel){
+function latestCards(rel){
   var s = sortAssets(rel), when = (rel.published_at || "").slice(0,10);
   var pv = s.portal ? ver(s.portal.name) : "", av = s.agent ? ver(s.agent.name) : "";
-  var title = 'METRIC' + (pv ? ' Portal ' + esc(pv) : '') + (av ? '　＋　Agent ' + esc(av) : '');
-  var html = '<div class="card">'
-    + '<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
-    + '<div style="flex:1;min-width:220px"><h3>' + title + '</h3>'
-    + '<p>' + (s.bundle ? '同捆包（Portal＋Agent＋簽章清單）　·　' + mb(s.bundle.size) : '這一版沒有同捆包，請分別下載下面的檔案')
-    + (when ? '　·　' + esc(when) : '') + '</p></div>';
-  if (s.bundle) html += '<a class="btn" href="' + esc(s.bundle.browser_download_url) + '">下載同捆包</a>';
-  html += '</div>'
-    + '<div class="files">'
-    + fileRow('伺服器', s.portal, s.portalManifest)
-    + fileRow('同事的電腦', s.agent, s.agentManifest)
-    + '</div></div>';
-  return html;
+  var head = '<p class="dim" style="margin-bottom:14px">Portal ' + esc(pv)
+    + (av ? '　·　Agent ' + esc(av) : '') + (when ? '　·　' + esc(when) : '') + '</p>';
+  return head
+    + downloadCard({asset: s.portal, manifest: s.portalManifest, primary: true,
+        title: 'Portal（內含 Agent）', badge: '第一次安裝用這個',
+        blurb: '裝在公司的伺服器上，需要管理員權限。裡面已經有同一版的 Agent，'
+             + '裝完之後公司的下載頁馬上就能讓同事拿，而且那一份會自動帶上伺服器位址。'})
+    + downloadCard({asset: s.portalOnly, manifest: s.portalOnlyManifest,
+        title: 'Portal（單機版，不含 Agent）',
+        blurb: '已經有 Agent、只想升級 Portal 的時候用。檔案小很多。'
+             + '全新安裝請不要用這個 —— 下載頁會是空的，同事拿不到 Agent。'})
+    + downloadCard({asset: s.agent, manifest: s.agentManifest,
+        title: 'Agent（單獨的安裝檔）',
+        blurb: '裝在同事的電腦上，不需要管理員權限。'
+             + '一般情況請改從貴公司 Portal 的下載頁拿 —— 那一份已經帶好伺服器位址；'
+             + '這裡這一份沒有，安裝時會問要連哪一台。'});
 }
 
 function allTable(rels){
@@ -201,8 +220,9 @@ function allTable(rels){
       + '<td><b>Portal ' + esc(pv) + '</b><br><span class="dim">Agent ' + esc(av) + '</span></td>'
       + '<td class="dim">' + esc(when) + '</td>'
       + '<td class="links">'
-      + link(s.bundle, '同捆包') + link(s.portal, 'Portal') + link(s.agent, 'Agent')
-      + link(s.portalManifest, 'Portal 簽章') + link(s.agentManifest, 'Agent 簽章')
+      + link(s.portal, 'Portal') + link(s.portalOnly, 'Portal 單機版') + link(s.agent, 'Agent')
+      + link(s.portalManifest, 'Portal 簽章') + link(s.portalOnlyManifest, '單機版簽章')
+      + link(s.agentManifest, 'Agent 簽章')
       + '　<a class="dim" href="' + esc(rel.html_url) + '">說明</a>'
       + '</td></tr>';
   }).join('');
@@ -216,7 +236,7 @@ fetch(API + "?per_page=100", {headers: {"Accept": "application/vnd.github+json"}
     var usable = (rels || []).filter(function(rel){ return !rel.draft && !rel.prerelease && (rel.assets || []).length; });
     usable.sort(function(a, b){ return String(b.published_at).localeCompare(String(a.published_at)); });
     if (!usable.length) throw new Error("沒有可用的安裝檔");
-    document.getElementById("list").innerHTML = latestCard(usable[0]);
+    document.getElementById("list").innerHTML = latestCards(usable[0]);
     document.getElementById("all").innerHTML = allTable(usable);
     var s = sortAssets(usable[0]);
     document.getElementById("src").textContent = "METRIC　·　Portal " + (s.portal ? ver(s.portal.name) : "")
