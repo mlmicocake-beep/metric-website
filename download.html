@@ -29,9 +29,6 @@
   .files{display:grid;grid-template-columns:1fr auto auto;gap:8px 16px;align-items:center;margin-top:14px;font-size:14.5px}
   .files .n{color:var(--fg2)}
   .files a{white-space:nowrap}
-  table.rel{width:100%;border-collapse:collapse;margin-top:12px;font-size:14.5px}
-  table.rel th,table.rel td{padding:10px 8px;border-bottom:1px solid var(--line,#e3e3e3);text-align:left;vertical-align:top}
-  table.rel td.links a{margin-right:12px;white-space:nowrap}
   .dim{color:var(--fg2)}
 </style>
 </head>
@@ -66,14 +63,6 @@
   <div class="wrap">
     <h2>最新版本</h2>
     <div id="list"><p class="dim">讀取版本資訊中…</p></div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <h2>所有版本</h2>
-    <p class="dim" style="font-size:14.5px">每一版都留著，要退回舊版或補裝舊機器都從這裡拿。「Portal」那一欄就是內含 Agent 的完整安裝檔。</p>
-    <div id="all"><p class="dim">讀取中…</p></div>
   </div>
 </section>
 
@@ -211,33 +200,14 @@ function latestCards(rel){
              + '這裡這一份沒有，安裝時會問要連哪一台。'});
 }
 
-function allTable(rels){
-  var rows = rels.map(function(rel){
-    var s = sortAssets(rel), when = (rel.published_at || "").slice(0,10);
-    var pv = s.portal ? ver(s.portal.name) : "—", av = s.agent ? ver(s.agent.name) : "—";
-    function link(a, label){ return a ? '<a href="' + esc(a.browser_download_url) + '">' + label + '</a>' : '<span class="dim">' + label + '（無）</span>'; }
-    return '<tr>'
-      + '<td><b>Portal ' + esc(pv) + '</b><br><span class="dim">Agent ' + esc(av) + '</span></td>'
-      + '<td class="dim">' + esc(when) + '</td>'
-      + '<td class="links">'
-      + link(s.portal, 'Portal') + link(s.portalOnly, 'Portal 單機版') + link(s.agent, 'Agent')
-      + link(s.portalManifest, 'Portal 簽章') + link(s.portalOnlyManifest, '單機版簽章')
-      + link(s.agentManifest, 'Agent 簽章')
-      + '　<a class="dim" href="' + esc(rel.html_url) + '">說明</a>'
-      + '</td></tr>';
-  }).join('');
-  return '<table class="rel"><tr><th>版本</th><th>日期</th><th>下載</th></tr>' + rows + '</table>';
-}
-
 document.getElementById("allrel").href = "https://github.com/" + REPO + "/releases";
-fetch(API + "?per_page=100", {headers: {"Accept": "application/vnd.github+json"}})
+fetch(API + "?per_page=10", {headers: {"Accept": "application/vnd.github+json"}})
   .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(function(rels){
     var usable = (rels || []).filter(function(rel){ return !rel.draft && !rel.prerelease && (rel.assets || []).length; });
     usable.sort(function(a, b){ return String(b.published_at).localeCompare(String(a.published_at)); });
     if (!usable.length) throw new Error("沒有可用的安裝檔");
     document.getElementById("list").innerHTML = latestCards(usable[0]);
-    document.getElementById("all").innerHTML = allTable(usable);
     var s = sortAssets(usable[0]);
     document.getElementById("src").textContent = "METRIC　·　Portal " + (s.portal ? ver(s.portal.name) : "")
       + (s.agent ? "　·　Agent " + ver(s.agent.name) : "");
@@ -255,7 +225,6 @@ fetch(API + "?per_page=100", {headers: {"Accept": "application/vnd.github+json"}
       + '<a class="btn" href="https://github.com/' + REPO + '/releases">發行頁面</a>'
       + '</div></div>';
     document.getElementById("list").innerHTML = fallback;
-    document.getElementById("all").innerHTML = "";
   });
 </script>
 </body>
