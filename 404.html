@@ -3,21 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- 🔴 GitHub Pages 的專案站掛在 /<repo>/ 底下，不是網域根目錄。
+     而 404.html 會被拿來回應**任何**深度的錯誤網址（/metric-website/a/b/c），
+     所以這一頁不能用相對路徑，也不能用 `/style.css` 這種根目錄絕對路徑
+     —— 前者會相對到 /a/b/ 找不到，後者會去 mlmicocake-beep.github.io/style.css 找不到。
+     用 <base> 把所有相對路徑釘在站根。搬到自有網域的根目錄時改成 "/"。 -->
+<base href="/metric-website/">
 <title>找不到這一頁 — METRIC</title>
-<link rel="icon" type="image/svg+xml" href="/brand/metric-badge-ink.svg">
-<link rel="alternate icon" href="/brand/favicon.ico">
-<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
+<link rel="alternate icon" href="brand/favicon.ico">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
   <div class="nav">
-    <a class="brand" href="/"><img class="mark" src="/brand/metric-badge-ink.svg" alt="" aria-hidden="true">
+    <a class="brand" href="index.html"><img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
       <span>METRIC</span></a>
     <nav>
-      <a href="/index.html">介紹</a>
-      <a href="/guide.html">如何使用</a>
-      <a href="/download.html">下載</a>
-      <a href="/about.html">關於我</a>
+      <a href="index.html">介紹</a>
+      <a href="guide.html">如何使用</a>
+      <a href="download.html">下載</a>
+      <a href="about.html">關於我</a>
     </nav>
   </div>
 </header>
@@ -27,9 +33,9 @@
     <h1>找不到這一頁</h1>
     <p class="lead">連結可能過期了，或是網址打錯。下面幾頁應該是你要找的。</p>
     <div class="cta">
-      <a class="btn" href="/index.html">回首頁</a>
-      <a class="btn alt" href="/download.html">下載</a>
-      <a class="btn alt" href="/guide.html">如何使用</a>
+      <a class="btn" href="index.html">回首頁</a>
+      <a class="btn alt" href="download.html">下載</a>
+      <a class="btn alt" href="guide.html">如何使用</a>
     </div>
   </div>
 </div>
