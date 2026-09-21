@@ -79,6 +79,7 @@ Settings → Pages → Source 選 `main` 分支、根目錄。
 
 發行 repo：`mlmicocake-beep/metric-releases`
 
-SHA-256 不在頁面上顯示 —— release 附件的網址會轉到 `objects.githubusercontent.com`，
-該處不送 `Access-Control-Allow-Origin`，瀏覽器 fetch 一定被 CORS 擋掉。要核對的人
-按「簽章清單」直接開那個檔。
+SHA-256 不在頁面上顯示 —— `github.com` 的 release 下載端點不送
+`Access-Control-Allow-Origin`，瀏覽器 fetch 附件一定被 CORS 擋掉
+（`api.github.com` 有送 `*`，所以列版本可以、抓附件內容不行）。
+要核對的人按「簽章清單」直接開那個檔。

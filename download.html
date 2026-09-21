@@ -146,8 +146,9 @@ fetch(API + "?per_page=5", {headers: {"Accept": "application/vnd.github+json"}})
     document.getElementById("list").innerHTML = card(found, ver, when);
     document.getElementById("src").textContent = "METRIC　·　" + (ver ? ver : "");
     // 🔴 不要再加「抓 manifest 把 sha256 顯示在頁面上」這件事。
-    // release 附件的網址會轉到 objects.githubusercontent.com，那邊不送
-    // Access-Control-Allow-Origin，瀏覽器的 fetch 一定被 CORS 擋掉 ——
+    // github.com 的 release 下載端點**不送** Access-Control-Allow-Origin
+    // （連 302 那一跳都沒有），所以瀏覽器 fetch 附件一定被 CORS 擋掉。
+    // 對照組：api.github.com 有送 `*` —— 所以「列出版本」可以、「抓附件內容」不行。
     // 失敗被 catch 吃掉之後，畫面上就是一個永遠空白的欄位。
     // 要核對的人按「簽章清單」直接開那個檔就看得到 sha256。
   })
