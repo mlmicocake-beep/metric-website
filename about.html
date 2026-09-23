@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>關於我們 — METRIC</title>
-<meta name="description" content="我們為什麼這樣做 METRIC、它由哪些部分組成，以及要找我們的時候怎麼找。">
+<title>關於 — METRIC</title>
+<meta name="description" content="METRIC 的設計原則、系統組成與聯絡方式。">
 <link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
 <link rel="alternate icon" href="brand/favicon.ico">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -18,8 +18,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="METRIC">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:title" content="關於我們 — METRIC">
-<meta property="og:description" content="我們為什麼這樣做 METRIC、它由哪些部分組成，以及要找我們的時候怎麼找。">
+<meta property="og:title" content="關於 — METRIC">
+<meta property="og:description" content="METRIC 的設計原則、系統組成與聯絡方式。">
 <meta property="og:url" content="https://mlmicocake-beep.github.io/metric-website/about.html">
 <meta property="og:image" content="https://mlmicocake-beep.github.io/metric-website/brand/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -36,21 +36,21 @@
       <span>METRIC</span>
     </a>
     <nav>
-      <a href="index.html">介紹</a>
-      <a href="guide.html">如何使用</a>
+      <a href="index.html">產品</a>
+      <a href="guide.html">部署指南</a>
       <a href="download.html">下載</a>
-      <a href="about.html" aria-current="page">關於我</a>
+      <a href="about.html" aria-current="page">關於</a>
     </nav>
   </div>
 </header>
 
 <div class="hero">
   <div class="wrap">
-    <h1>把 AI 帶進公司，而不是把公司的資料送出去</h1>
+    <h1>將 AI 導入企業，而非將企業資料送出</h1>
     <p class="lead">
-      我們遇過太多公司，想用 AI 但一直卡在同一個問題上：
-      這些對話和檔案，到底會跑到哪裡去？
-      METRIC 的答案很單純 —— 哪裡都不去，就留在你們自己的伺服器上。
+      許多企業評估導入 AI 時，面臨同一個問題：
+      對話與檔案最終會傳送到哪裡。
+      METRIC 的答案是：不傳送至任何外部位置，一律保存於企業自有的伺服器。
     </p>
   </div>
 </div>
@@ -59,30 +59,30 @@
 <section class="invert">
   <div class="wrap">
     <p class="eyebrow">設計原則</p>
-    <h2>五件我們沒有讓步的事</h2>
+    <h2>五項不妥協的原則</h2>
     <ul class="tick">
-      <li><b>出廠就是不對外的。</b>要連出去，得有人刻意去把那個開關打開。我們不會把「會連外」當成沒設定時的預設值。</li>
-      <li><b>金鑰不下放。</b>模型的金鑰只留在公司的伺服器上，不會出現在任何一台同事的電腦裡。</li>
-      <li><b>只安裝我們簽過名的東西。</b>每一份更新檔都要驗過我們的簽章才裝得上去。就算有人拿到了後台密碼，也換不掉你們的伺服器。</li>
-      <li><b>不去動你們的帳號系統。</b>接上公司的帳號目錄時我們只讀不寫；要停用某個人，改的也只是 METRIC 自己的資料。</li>
-      <li><b>出問題的時候，要看得出來是哪裡出問題。</b>失敗的原因會直接寫在畫面上，而不是藏在某個沒人會去翻的記錄檔裡。</li>
+      <li><b>出廠預設不對外連線。</b>對外連線須由管理員明確啟用；未經設定時，一律不連外。</li>
+      <li><b>金鑰不下放。</b>模型 API 金鑰僅存放於企業伺服器，不會出現在任何使用者電腦。</li>
+      <li><b>僅安裝經原廠簽章的檔案。</b>每份更新檔皆須通過原廠簽章驗證方可安裝；即使後台密碼外洩，亦無法藉此替換伺服器上的程式。</li>
+      <li><b>不寫入企業帳號系統。</b>串接企業帳號目錄時僅讀取、不寫入；停用使用者時，僅變更 METRIC 自身的資料。</li>
+      <li><b>問題可直接定位。</b>失敗原因直接顯示於畫面，無須另行翻查記錄檔。</li>
     </ul>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <h2>它由兩個部分組成</h2>
+    <h2>系統組成</h2>
     <table>
-      <tr><th>名稱</th><th>裝在哪</th><th>負責什麼</th></tr>
-      <tr><td><b>METRIC Portal</b></td><td>公司伺服器</td>
-          <td>管人、管權限、管模型與額度，順便統計大家用了多少，也負責把新版本發下去</td></tr>
+      <tr><th>名稱</th><th>部署位置</th><th>職責</th></tr>
+      <tr><td><b>METRIC Portal</b></td><td>企業伺服器</td>
+          <td>管理使用者、權限、模型與配額，統計用量，並負責派送新版本</td></tr>
       <tr><td><b>METRIC Agent</b></td><td>使用者電腦</td>
-          <td>同事每天實際在用的那一套：聊天、處理檔案、查知識庫、排例行工作、養聊天機器人</td></tr>
+          <td>使用者日常操作的應用程式：對話、檔案處理、知識庫查詢、例行工作排程、聊天機器人</td></tr>
     </table>
     <p class="note" style="margin-top:20px">
-      授權檔我們會直接交給你們，<b>不會放在公開的下載頁上</b>。
-      它決定了可以開幾個人、用到什麼時候，而且是綁定你們那台伺服器的。
+      授權檔由原廠直接提供，<b>不在公開下載頁發佈</b>。
+      授權檔規範席次數與到期日，並綁定貴企業的伺服器。
     </p>
   </div>
 </section>
@@ -90,19 +90,19 @@
 <section>
   <div class="wrap">
     <p class="eyebrow">聯絡</p>
-    <h2>有事情找我們</h2>
+    <h2>聯絡方式</h2>
     <!-- 暫時走 GitHub Issues。確定對外窗口（信箱或表單）之後換掉這一段。 -->
     <p class="note">
-      請到 <a href="https://github.com/mlmicocake-beep/metric-releases/issues">GitHub Issues</a>
-      開一則問題，我們會在上面回覆。<br>
-      需要 GitHub 帳號。Issue 是公開的 —— 請不要在裡面貼授權檔、金鑰或公司內部位址。
+      請於 <a href="https://github.com/mlmicocake-beep/metric-releases/issues">GitHub Issues</a>
+      建立 Issue，原廠將於該處回覆。<br>
+      須具備 GitHub 帳號。Issue 內容為公開，請勿張貼授權檔、金鑰或企業內部位址。
     </p>
     <p style="color:var(--muted-fg);font-size:14.5px;margin-top:20px">
-      不管是要開通、續約、加人，還是伺服器要搬家，都是同一個窗口，直接說就好。
+      開通、續約、增加席次及伺服器遷移，均透過同一窗口辦理。
     </p>
     <div class="cta">
       <a class="btn" href="download.html">下載</a>
-      <a class="btn alt" href="guide.html">安裝流程</a>
+      <a class="btn alt" href="guide.html">部署指南</a>
     </div>
   </div>
 </section>
@@ -111,10 +111,10 @@
   <div class="wrap">
     <span>METRIC　·　開發：雨宇商務共享</span>
     <nav>
-      <a href="index.html">介紹</a>
-      <a href="guide.html">如何使用</a>
+      <a href="index.html">產品</a>
+      <a href="guide.html">部署指南</a>
       <a href="download.html">下載</a>
-      <a href="about.html">關於我</a>
+      <a href="about.html">關於</a>
     </nav>
   </div>
 </footer>

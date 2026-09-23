@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>下載 — METRIC</title>
-<meta name="description" content="下載 METRIC 安裝檔。Portal 的安裝檔已內含 Agent，第一次安裝下載它就夠了；另有不含 Agent 的 Portal 單機版與 Agent 單獨安裝檔。授權檔由技術支援另外提供。">
+<meta name="description" content="下載 METRIC 安裝檔。Portal 安裝檔已內含 Agent，首次安裝僅需下載此檔；另提供不含 Agent 的 Portal 安裝檔與 Agent 獨立安裝檔。授權檔由技術支援另行提供。">
 <link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
 <link rel="alternate icon" href="brand/favicon.ico">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="METRIC">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:title" content="下載 — METRIC">
-<meta property="og:description" content="下載 METRIC 安裝檔。Portal 的安裝檔已內含 Agent，第一次安裝下載它就夠了。">
+<meta property="og:description" content="下載 METRIC 安裝檔。Portal 安裝檔已內含 Agent，首次安裝僅需下載此檔。">
 <meta property="og:url" content="https://mlmicocake-beep.github.io/metric-website/download.html">
 <meta property="og:image" content="https://mlmicocake-beep.github.io/metric-website/brand/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -39,10 +39,10 @@
     <a class="brand" href="index.html"><img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
       <span>METRIC</span></a>
     <nav>
-      <a href="index.html">介紹</a>
-      <a href="guide.html">如何使用</a>
+      <a href="index.html">產品</a>
+      <a href="guide.html">部署指南</a>
       <a href="download.html" aria-current="page">下載</a>
-      <a href="about.html">關於我</a>
+      <a href="about.html">關於</a>
     </nav>
   </div>
 </header>
@@ -50,11 +50,11 @@
 <div class="hero">
   <div class="wrap">
     <p class="eyebrow">下載</p>
-    <h1>第一次安裝，下載 Portal 就夠了</h1>
+    <h1>首次安裝僅需下載 Portal</h1>
     <p class="lead">
-      Portal 的安裝檔裡已經內含同一版的 Agent —— 伺服器裝好之後，公司的下載頁馬上就有
-      Agent 可以拿，而且那一份會自動帶上你們伺服器的位址，同事安裝時不用手動填。
-      下面另外兩個是給特殊情況用的。
+      Portal 安裝檔已內含同版本的 Agent。Portal 安裝完成後，企業內部下載頁即提供
+      Agent 安裝檔，並自動寫入伺服器位址，使用者安裝時無須手動輸入。
+      下方另外兩個安裝檔僅用於特定情境。
     </p>
   </div>
 </div>
@@ -68,29 +68,29 @@
 
 <section>
   <div class="wrap">
-    <h2>還差一份授權檔</h2>
+    <h2>授權檔</h2>
     <p class="note">
-      <b>授權檔（license.json）我們會直接交給你們，所以這一頁上沒有。</b>
-      它決定了可以開幾個人、用到什麼時候，而且是綁你們公司的，放在公開頁面上並不合適。
+      <b>授權檔（license.json）由原廠直接提供，不在本頁提供下載。</b>
+      授權檔規範席次數與到期日，並綁定貴企業，因此不公開發佈。
     </p>
     <p style="margin-top:20px">
-      安裝的時候可以直接貼上去；還沒拿到也沒關係，先留空，裝完再從後台補上就好。
-      <a href="guide.html">完整流程看這裡</a>。
+      可於安裝時匯入；亦可暫時留空，安裝後於後台上傳。
+      完整流程請參閱<a href="guide.html">部署指南</a>。
     </p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <h2>想確認檔案沒被動過手腳？</h2>
-    <p>每個安裝檔都配了一份我們簽過名的清單（<span class="mono">.exe.manifest.json</span>），
-       裡面寫著這個檔案的 SHA-256。下載完想自己對一下的話：</p>
+    <h2>驗證檔案完整性</h2>
+    <p>每個安裝檔均附一份原廠簽章清單（<span class="mono">.exe.manifest.json</span>），
+       記載該檔案的 SHA-256。下載後可執行下列指令自行核對：</p>
     <pre>certutil -hashfile MetricPortalSetup-&lt;版本&gt;.exe SHA256</pre>
     <p style="color:var(--fg2);font-size:14.5px">
-      算出來的值，應該要跟簽章清單裡的 <span class="mono">sha256</span> 一模一樣
-      （按「簽章清單」就會打開那個檔）。
-      其實不對也沒關係 —— Portal 在安裝更新的時候<b>本來就會自己驗一次</b>，
-      驗不過就直接拒絕安裝。手動核對只是讓你更安心，不是必要步驟。
+      計算結果應與簽章清單中的 <span class="mono">sha256</span> 完全一致
+      （點選「簽章清單」即可開啟該檔）。
+      Portal 安裝更新時<b>會自動驗證簽章</b>，
+      驗證失敗即拒絕安裝；手動核對為選用步驟。
     </p>
   </div>
 </section>
@@ -108,8 +108,8 @@
           <td>8 核／32 GB／50 GB SSD</td></tr>
     </table>
     <p style="margin-top:20px;color:var(--fg2);font-size:14.5px">
-      伺服器那一套需要管理員權限才裝得起來。
-      同事電腦上那一套不用，但安裝過程要能連上網路下載執行環境。
+      Portal 須以系統管理員權限安裝。
+      Agent 無須系統管理員權限，但安裝過程須具備網路連線，以下載執行環境。
     </p>
   </div>
 </section>
@@ -119,8 +119,8 @@
     <span id="src">METRIC</span>
     <nav>
       <a id="allrel" href="#">GitHub 發行頁</a>
-      <a href="guide.html">如何使用</a>
-      <a href="about.html">關於我</a>
+      <a href="guide.html">部署指南</a>
+      <a href="about.html">關於</a>
     </nav>
   </div>
 </footer>
@@ -186,18 +186,18 @@ function latestCards(rel){
     + (av ? '　·　Agent ' + esc(av) : '') + (when ? '　·　' + esc(when) : '') + '</p>';
   return head
     + downloadCard({asset: s.portal, manifest: s.portalManifest, primary: true,
-        title: 'Portal（內含 Agent）', badge: '第一次安裝用這個',
-        blurb: '裝在公司的伺服器上，需要管理員權限。裡面已經有同一版的 Agent，'
-             + '裝完之後公司的下載頁馬上就能讓同事拿，而且那一份會自動帶上伺服器位址。'})
+        title: 'Portal（內含 Agent）', badge: '首次安裝適用',
+        blurb: '安裝於企業伺服器，須系統管理員權限。內含同版本的 Agent，'
+             + '安裝完成後，企業內部下載頁即可提供 Agent 給使用者，並自動寫入伺服器位址。'})
     + downloadCard({asset: s.portalOnly, manifest: s.portalOnlyManifest,
-        title: 'Portal（單機版，不含 Agent）',
-        blurb: '已經有 Agent、只想升級 Portal 的時候用。檔案小很多。'
-             + '全新安裝請不要用這個 —— 下載頁會是空的，同事拿不到 Agent。'})
+        title: 'Portal（不含 Agent）',
+        blurb: '適用於已部署 Agent、僅需升級 Portal 的情境，檔案較小。'
+             + '請勿用於全新安裝：內部下載頁將沒有 Agent 可供使用者下載。'})
     + downloadCard({asset: s.agent, manifest: s.agentManifest,
-        title: 'Agent（單獨的安裝檔）',
-        blurb: '裝在同事的電腦上，不需要管理員權限。'
-             + '一般情況請改從貴公司 Portal 的下載頁拿 —— 那一份已經帶好伺服器位址；'
-             + '這裡這一份沒有，安裝時會問要連哪一台。'});
+        title: 'Agent（獨立安裝檔）',
+        blurb: '安裝於使用者電腦，無須系統管理員權限。'
+             + '一般情況請改由貴企業 Portal 的下載頁取得，該版本已內建伺服器位址；'
+             + '本頁版本未內建，安裝時會詢問要連線的伺服器。'});
 }
 
 document.getElementById("allrel").href = "https://github.com/" + REPO + "/releases";
@@ -206,7 +206,7 @@ fetch(API + "?per_page=10", {headers: {"Accept": "application/vnd.github+json"}}
   .then(function(rels){
     var usable = (rels || []).filter(function(rel){ return !rel.draft && !rel.prerelease && (rel.assets || []).length; });
     usable.sort(function(a, b){ return String(b.published_at).localeCompare(String(a.published_at)); });
-    if (!usable.length) throw new Error("沒有可用的安裝檔");
+    if (!usable.length) throw new Error("無可用的安裝檔");
     document.getElementById("list").innerHTML = latestCards(usable[0]);
     var s = sortAssets(usable[0]);
     document.getElementById("src").textContent = "METRIC　·　Portal " + (s.portal ? ver(s.portal.name) : "")
@@ -218,10 +218,10 @@ fetch(API + "?per_page=10", {headers: {"Accept": "application/vnd.github+json"}}
     // 要核對的人按「簽章清單」直接開那個檔就看得到 sha256。
   })
   .catch(function(e){
-    var fallback = '<p class="dim">暫時讀不到版本資訊（' + esc(e.message) + '）。</p>'
+    var fallback = '<p class="dim">無法取得版本資訊（' + esc(e.message) + '）。</p>'
       + '<div class="card"><div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
       + '<div style="flex:1;min-width:200px"><h3>前往發行頁面</h3>'
-      + '<p>在那裡挑選版本下載</p></div>'
+      + '<p>請於發行頁面選擇版本下載。</p></div>'
       + '<a class="btn" href="https://github.com/' + REPO + '/releases">發行頁面</a>'
       + '</div></div>';
     document.getElementById("list").innerHTML = fallback;

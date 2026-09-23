@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>如何使用 — METRIC</title>
-<meta name="description" content="METRIC 的安裝與開通流程：IT 裝 Portal、貼授權、使用者從公司下載頁取得 Agent。">
+<title>部署指南 — METRIC</title>
+<meta name="description" content="METRIC 的安裝與開通流程：IT 部署 Portal 並匯入授權，使用者自企業內部下載頁取得 Agent。">
 <link rel="icon" type="image/svg+xml" href="brand/metric-badge-ink.svg">
 <link rel="alternate icon" href="brand/favicon.ico">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -18,8 +18,8 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="METRIC">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:title" content="如何使用 — METRIC">
-<meta property="og:description" content="METRIC 的安裝與開通流程：IT 裝 Portal、貼授權、使用者從公司下載頁取得 Agent。">
+<meta property="og:title" content="部署指南 — METRIC">
+<meta property="og:description" content="METRIC 的安裝與開通流程：IT 部署 Portal 並匯入授權，使用者自企業內部下載頁取得 Agent。">
 <meta property="og:url" content="https://mlmicocake-beep.github.io/metric-website/guide.html">
 <meta property="og:image" content="https://mlmicocake-beep.github.io/metric-website/brand/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -34,10 +34,10 @@
     <a class="brand" href="index.html"><img class="mark" src="brand/metric-badge-ink.svg" alt="" aria-hidden="true">
       <span>METRIC</span></a>
     <nav>
-      <a href="index.html">介紹</a>
-      <a href="guide.html" aria-current="page">如何使用</a>
+      <a href="index.html">產品</a>
+      <a href="guide.html" aria-current="page">部署指南</a>
       <a href="download.html">下載</a>
-      <a href="about.html">關於我</a>
+      <a href="about.html">關於</a>
     </nav>
   </div>
 </header>
@@ -45,48 +45,48 @@
 <div class="hero">
   <div class="wrap">
     <p class="eyebrow">安裝與開通</p>
-    <h1>裝一次，全公司就能開始用</h1>
+    <h1>一次部署，全企業啟用</h1>
     <p class="lead">
-      IT 在伺服器上裝一個檔案，把我們給的授權貼上去，就可以開始了。
-      同事那一端不用 IT 一台一台跑，他們自己下載就好。
+      IT 於伺服器執行一個安裝檔並匯入原廠授權，即可開始使用。
+      Agent 由使用者自行下載安裝，無須 IT 逐台部署。
     </p>
   </div>
 </div>
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">給 IT</p>
-    <h2>伺服器這一端</h2>
+    <p class="eyebrow">IT 管理員</p>
+    <h2>伺服器端</h2>
     <ol class="steps">
       <li>
-        <h3>先準備兩個檔案</h3>
-        <p>一個是安裝檔（<span class="mono">MetricPortalSetup-*.exe</span>），
-           從下載頁拿；另一個是授權檔（<span class="mono">license.json</span>），
-           <b>這一份我們會另外給你們</b>。授權檔是綁你們公司的，所以不會放在公開的下載頁上。</p>
+        <h3>準備安裝檔與授權檔</h3>
+        <p>安裝檔（<span class="mono">MetricPortalSetup-*.exe</span>）
+           自下載頁取得；授權檔（<span class="mono">license.json</span>）
+           <b>由原廠另行提供</b>。授權檔綁定貴企業，因此不在公開下載頁提供。</p>
       </li>
       <li>
         <h3>安裝</h3>
-        <p>用管理員身分打開安裝檔就好。過程中只會問你兩件事：</p>
-        <p><b>連線設定</b>：要用 HTTP 還是 HTTPS、走哪個埠。不確定的話直接下一步，用預設值就可以。</p>
-        <p><b>授權檔</b>：把剛剛那份 <span class="mono">license.json</span> 選進來。
-           還沒拿到也不要緊，先留空，裝完再從後台補上。</p>
+        <p>以系統管理員身分執行安裝檔。安裝過程僅需設定以下兩項：</p>
+        <p><b>連線設定</b>：選擇 HTTP 或 HTTPS 及連接埠。無特殊需求可直接採用預設值。</p>
+        <p><b>授權檔</b>：選取 <span class="mono">license.json</span>。
+           可暫時留空，安裝後於後台上傳。</p>
       </li>
       <li>
-        <h3>登入後台，先改密碼</h3>
-        <p>瀏覽器打開 <span class="mono">https://伺服器位址:8788</span>，用預設的管理員帳號登入。
-           <b>進去第一件事請先把預設密碼改掉。</b></p>
-        <p>「版本與授權 → 授權與續約」會看到授權的狀況：還剩幾天、已經開了幾個人、綁在哪一台機器上。</p>
+        <h3>登入後台並變更預設密碼</h3>
+        <p>以瀏覽器開啟 <span class="mono">https://伺服器位址:8788</span>，使用預設管理員帳號登入。
+           <b>首次登入後，請立即變更預設密碼。</b></p>
+        <p>「版本與授權 → 授權與續約」顯示授權狀態：剩餘天數、已開通人數，以及綁定的機器。</p>
       </li>
       <li>
         <h3>設定模型</h3>
-        <p>到「模型 → 供應商與閘道」填上你們要用的模型。可以是公司自己架的，
-           也可以是外面供應商的金鑰。<b>金鑰只會留在這台伺服器上，不會跑到同事的電腦裡。</b></p>
+        <p>於「模型 → 供應商與閘道」設定要使用的模型，可為企業自行部署的模型，
+           或外部供應商的 API 金鑰。<b>金鑰僅存放於此伺服器，不會下發至使用者電腦。</b></p>
       </li>
       <li>
-        <h3>把下載連結發給大家</h3>
+        <h3>提供下載連結給使用者</h3>
         <p><span class="mono">https://伺服器位址:8788/downloads</span></p>
-        <p>安裝的時候已經一併把給同事用的版本放進去了，所以這一頁打開就有東西可以下載，
-           你不用再另外準備什麼。</p>
+        <p>Portal 安裝時已一併部署 Agent 安裝檔，此頁面開啟即可下載，
+           無須另行準備。</p>
       </li>
     </ol>
   </div>
@@ -94,26 +94,26 @@
 
 <section>
   <div class="wrap">
-    <p class="eyebrow">給同事</p>
-    <h2>自己的電腦這一端</h2>
+    <p class="eyebrow">使用者</p>
+    <h2>使用者端</h2>
     <ol class="steps">
       <li>
-        <h3>從公司的下載頁拿</h3>
-        <p>打開 IT 給你的那個公司內部網址。<b>從那裡下載的安裝檔已經知道要連哪一台伺服器了</b>，
-           你不需要自己填任何位址。</p>
+        <h3>自內部下載頁取得安裝檔</h3>
+        <p>開啟 IT 提供的企業內部網址。<b>自該頁下載的安裝檔已內建伺服器位址</b>，
+           無須手動輸入。</p>
       </li>
       <li>
         <h3>安裝</h3>
-        <p>不需要管理員權限，自己就能裝。過程中會下載一些執行環境，所以電腦要能連得上網路。</p>
+        <p>無須系統管理員權限，使用者可自行安裝。安裝過程會下載執行環境，電腦須具備網路連線。</p>
       </li>
       <li>
         <h3>送出申請</h3>
-        <p>第一次打開的時候填一下姓名（或公司帳號，看你們 IT 怎麼設定），送出就好。</p>
+        <p>首次啟動時填寫姓名（或企業帳號，依 IT 設定而定）並送出。</p>
       </li>
       <li>
-        <h3>等 IT 按核准</h3>
-        <p>IT 在後台按下核准，你就可以開始用了。<b>一個人配一台機器</b>，
-           所以要換電腦的話，記得先請 IT 把舊的那台停用。</p>
+        <h3>等候 IT 核准</h3>
+        <p>IT 於後台核准後即可開始使用。<b>每位使用者對應一台機器</b>；
+           更換電腦前，須先請 IT 停用舊機器。</p>
       </li>
     </ol>
   </div>
@@ -122,21 +122,21 @@
 <section>
   <div class="wrap">
     <p class="eyebrow">授權</p>
-    <h2>授權的事，交給我們</h2>
-    <p>授權檔只決定兩件事：<b>可以開幾個人</b>，還有<b>用到什麼時候</b>。
-       它是我們簽過名的檔案，改動一個位元組就會失效，所以請保留原檔、不要編輯。</p>
+    <h2>授權由原廠核發</h2>
+    <p>授權檔僅規範兩項：<b>席次數</b>與<b>到期日</b>。
+       授權檔經原廠簽章，任何一個位元組遭變更即失效；請保留原檔，勿自行編輯。</p>
     <table>
-      <tr><th>情況</th><th>怎麼做</th></tr>
-      <tr><td>第一次開通</td><td>我們把授權檔給你，安裝時貼上，或是裝完再從後台上傳</td></tr>
-      <tr><td>續約</td><td>我們給你一份新的，在「版本與授權 → 授權與續約」按「上傳授權檔」就好，<b>馬上生效，不用重開</b></td></tr>
-      <tr><td>要多開幾個人</td><td>跟我們說要加到幾個人，我們換一份新的給你</td></tr>
-      <tr><td>伺服器搬家</td><td>把新伺服器後台那個「本機識別碼」寄給我們，我們換一份綁新機器的給你</td></tr>
+      <tr><th>情境</th><th>處理方式</th></tr>
+      <tr><td>首次開通</td><td>原廠提供授權檔，於安裝時匯入，或安裝後於後台上傳</td></tr>
+      <tr><td>續約</td><td>原廠提供新授權檔，於「版本與授權 → 授權與續約」點選「上傳授權檔」，<b>立即生效，無須重新啟動</b></td></tr>
+      <tr><td>增加席次</td><td>告知原廠所需席次數，由原廠核發新的授權檔</td></tr>
+      <tr><td>伺服器遷移</td><td>將新伺服器後台顯示的「本機識別碼」提供給原廠，由原廠核發綁定新機器的授權檔</td></tr>
     </table>
     <p class="note" style="margin-top:20px">
-      <b>到期那天會停止服務。</b>後台在剩 30 天的時候就會開始提醒，
-      有設定信件通知的話也會寄信給你。
-      要特別注意的是：到期當天是<b>所有人</b>同時連不上，不是只擋新加入的人，
-      所以請盡量提前處理。
+      <b>授權到期當日即停止服務。</b>到期前 30 天起，後台會開始提醒；
+      若已設定郵件通知，亦會寄送通知信。
+      請注意：到期時<b>所有使用者</b>將同時無法連線，並非僅限制新加入的使用者，
+      請提前完成續約。
     </p>
   </div>
 </section>
@@ -144,44 +144,44 @@
 <section>
   <div class="wrap">
     <p class="eyebrow">更新</p>
-    <h2>更新方式，你們自己挑</h2>
+    <h2>兩種更新模式</h2>
     <div class="grid">
       <div class="card">
         <h3>離線（出廠預設）</h3>
-        <p>這台伺服器<b>完全不對外連線</b>。有新版的時候我們把檔案給你們，IT 在後台上傳就好。
-           如果你們的機房本來就不允許對外連線，選這個。</p>
+        <p>伺服器<b>完全不對外連線</b>。新版本由原廠提供更新檔，IT 於後台上傳。
+           適用於不允許對外連線的機房環境。</p>
       </div>
       <div class="card">
         <h3>線上</h3>
-        <p>伺服器每 6 小時自己去看一次有沒有新版，有的話會在後台提醒你。
-           <b>但要不要下載、要不要安裝，還是 IT 自己按下去才會動。</b></p>
+        <p>伺服器每 6 小時自動檢查一次新版本，有新版時於後台提示。
+           <b>是否下載與安裝，仍須由 IT 手動執行。</b></p>
       </div>
     </div>
     <p class="note" style="margin-top:18px">
-      要切成線上模式的話，防火牆需要放行三個網址：<span class="mono">api.github.com</span>、
+      啟用線上模式時，防火牆須放行以下三個網域：<span class="mono">api.github.com</span>、
       <span class="mono">github.com</span>、<span class="mono">release-assets.githubusercontent.com</span>。
-      每次檢查只會發出一個查詢，不會一直打。
+      每次檢查僅發出一個查詢請求。
     </p>
     <p style="margin-top:22px">
-      同事電腦上的更新<b>一律由公司自己的伺服器派送</b>，他們那一端完全不對外連線。
-      什麼時候推、推給誰，都是 IT 說了算。
+      使用者電腦的更新<b>一律由企業自有的伺服器派送</b>，使用者端完全不對外連線。
+      派送時間與對象由 IT 決定。
     </p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <h2>遇到狀況的時候</h2>
+    <h2>疑難排解</h2>
     <table>
-      <tr><th>狀況</th><th>可以先看這裡</th></tr>
-      <tr><td>有人連不上</td><td>先看後台「版本與授權 → 授權與續約」，到期或人數滿了都會顯示在那裡（儀表板最上方也會提醒）</td></tr>
-      <tr><td>裝完之後問要連哪一台</td><td>那份安裝檔不是從公司下載頁拿的。請用 IT 給的內部網址重新下載一次</td></tr>
-      <tr><td>檔案雜湊跟原檔對不起來</td><td>這是正常的。檔案結尾被蓋上了你們這台伺服器的位址</td></tr>
-      <tr><td>授權顯示「綁定不符」</td><td>通常是換過伺服器或做過災難復原。把本機識別碼寄給我們，重新核發一份就好</td></tr>
+      <tr><th>狀況</th><th>排查方式</th></tr>
+      <tr><td>使用者無法連線</td><td>檢查後台「版本與授權 → 授權與續約」：授權到期或席次已滿皆會顯示於此（儀表板頂端亦會提示）</td></tr>
+      <tr><td>安裝後詢問要連線的伺服器</td><td>該安裝檔並非自企業內部下載頁取得。請由 IT 提供的內部網址重新下載</td></tr>
+      <tr><td>檔案雜湊值與原檔不符</td><td>屬正常現象：檔案尾端已寫入貴企業伺服器的位址</td></tr>
+      <tr><td>授權顯示「綁定不符」</td><td>通常因更換伺服器或執行災難復原所致。請將「本機識別碼」提供給原廠，重新核發授權檔</td></tr>
     </table>
     <div class="cta">
       <a class="btn" href="download.html">下載</a>
-      <a class="btn alt" href="about.html">聯絡我們</a>
+      <a class="btn alt" href="about.html">聯絡方式</a>
     </div>
   </div>
 </section>
@@ -190,10 +190,10 @@
   <div class="wrap">
     <span>METRIC</span>
     <nav>
-      <a href="index.html">介紹</a>
-      <a href="guide.html">如何使用</a>
+      <a href="index.html">產品</a>
+      <a href="guide.html">部署指南</a>
       <a href="download.html">下載</a>
-      <a href="about.html">關於我</a>
+      <a href="about.html">關於</a>
     </nav>
   </div>
 </footer>
