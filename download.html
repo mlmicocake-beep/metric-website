@@ -180,7 +180,7 @@ function downloadCard(o){
 }
 
 function latestCards(rel){
-  var s = sortAssets(rel), when = (rel.published_at || "").slice(0,10);
+  var s = sortAssets(rel), when = rel.published_at ? new Date(rel.published_at).toLocaleDateString("sv-SE") : "";  // 本地日期；UTC 前 8 小時發版會少一天
   var pv = s.portal ? ver(s.portal.name) : "", av = s.agent ? ver(s.agent.name) : "";
   var head = '<p class="dim" style="margin-bottom:14px">Portal ' + esc(pv)
     + (av ? '　·　Agent ' + esc(av) : '') + (when ? '　·　' + esc(when) : '') + '</p>';
