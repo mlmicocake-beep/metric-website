@@ -100,14 +100,22 @@
     <h2>系統需求</h2>
     <table>
       <tr><th></th><th>最低</th><th>建議</th></tr>
-      <tr><td><b>Portal</b>（伺服器）</td>
-          <td>4 vCPU／8 GB／40 GB<br>Windows Server 2019+</td>
-          <td>8 vCPU／16 GB／100 GB SSD</td></tr>
+      <tr><td><b>Portal</b>（100 人）</td>
+          <td>4 vCPU／8 GB／130 GB<br>Windows Server 2019+</td>
+          <td>4 vCPU／16 GB／190 GB SSD</td></tr>
+      <tr><td><b>Portal</b>（300 人）</td>
+          <td>4 vCPU／16 GB／190 GB</td>
+          <td>8 vCPU／32 GB／310 GB SSD</td></tr>
+      <tr><td><b>Portal</b>（1,000 人）</td>
+          <td>8 vCPU／32 GB／410 GB</td>
+          <td>8 vCPU／64 GB／740 GB SSD</td></tr>
       <tr><td><b>Agent</b>（每位使用者）</td>
           <td>4 核／16 GB／20 GB<br>Windows 10／11</td>
           <td>8 核／32 GB／50 GB SSD</td></tr>
     </table>
     <p style="margin-top:20px;color:var(--fg2);font-size:14.5px">
+      Portal 磁碟以用量與稽核資料保存一年估算，含 14 天的每日資料庫備份（占一半以上，可另放在其他磁碟或網路儲存）；
+      資料庫請放在 SSD。
       Portal 須以系統管理員權限安裝。
       Agent 無須系統管理員權限，但安裝過程須具備網路連線，以下載執行環境。
     </p>
